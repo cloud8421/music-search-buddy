@@ -7,7 +7,7 @@ stages:
 build:
   stage: build
   before_script:
-    - npm install -g elm
+    - npm install --silent -g elm
     - make install
   script:
     - make
@@ -17,7 +17,7 @@ production:
   only:
     - master
   before_script:
-    - npm install -g elm surge
+    - npm install --silent -g elm surge
     - make install
   script:
     - make deploy
