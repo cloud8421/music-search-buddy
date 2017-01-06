@@ -1,12 +1,31 @@
 module State exposing (..)
 
 import Types exposing (..)
+import Spotify
+
 
 init : ( Model, Cmd Msg )
-init = 0 ! []
+init =
+    ( { query = Nothing
+      , albums = []
+      }
+    , Spotify.albumSearch "blackfield"
+    )
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
-        NoOp -> model ! []
+        NoOp ->
+            model ! []
+
+        Search q ->
+            model ! [ Spotify.albumSearch q ]
+
+        SearchResult (Ok albums) ->
+            ( { model | albums = albums }
+            , Cmd.none
+            )
+
+        SearchResult _ ->
+            model ! []
