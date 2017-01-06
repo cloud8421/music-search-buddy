@@ -7,3 +7,4 @@ build/CNAME: CNAME
 
 deploy:
 	surge build
+.PHONY: build
