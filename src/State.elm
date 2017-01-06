@@ -9,8 +9,16 @@ init =
     ( { query = Nothing
       , albums = []
       }
-    , Spotify.albumSearch "blackfield"
+    , Cmd.none
     )
+
+
+search : String -> Cmd Msg
+search q =
+    if String.length q >= 3 then
+        Spotify.albumSearch q
+    else
+        Cmd.none
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -20,7 +28,9 @@ update msg model =
             model ! []
 
         Search q ->
-            model ! [ Spotify.albumSearch q ]
+            ( { model | query = Just q }
+            , search q
+            )
 
         SearchResult (Ok albums) ->
             ( { model | albums = albums }
