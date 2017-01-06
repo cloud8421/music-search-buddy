@@ -1,4 +1,6 @@
 elm-stuff
 elm.js
 /build/*
+/dist/*
 /bin/*
+/node_modules
