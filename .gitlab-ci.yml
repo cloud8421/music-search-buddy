@@ -1,8 +1,20 @@
 image: node:latest
-before_script:
-  - npm install -g elm surge
-  - make install
+
+stages:
+  - build
+  - deploy
+
 build:
+  stage: build
+  before_script:
+    - npm install -g elm
+    - make install
   script:
     - make
-    - surge build
+
+production:
+  stage: deploy
+  before_script:
+    - npm install -g surge
+  script:
+    - make deploy
