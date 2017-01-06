@@ -14,7 +14,11 @@ build:
 
 production:
   stage: deploy
+  only:
+    - master
   before_script:
-    - npm install -g surge
+    - npm install -g elm surge
+    - make install
   script:
+    - make
     - make deploy
