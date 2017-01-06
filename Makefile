@@ -6,6 +6,6 @@ include elm.mk
 build/CNAME dist/CNAME: CNAME
 	cp $< $@
 
-deploy:
-	surge build
-.PHONY: build
+deploy: prod
+	surge dist
+.PHONY: deploy
