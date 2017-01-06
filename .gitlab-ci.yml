@@ -12,7 +12,7 @@ build:
   script:
     - make
 
-production:
+deploy_production:
   stage: deploy
   only:
     - master
@@ -21,3 +21,6 @@ production:
     - make install
   script:
     - make deploy
+  environment:
+    name: production
+    url: http://ms.fullyforged.com
