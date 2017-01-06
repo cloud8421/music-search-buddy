@@ -20,5 +20,4 @@ production:
     - npm install -g elm surge
     - make install
   script:
-    - make
     - make deploy
