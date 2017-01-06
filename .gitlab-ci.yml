@@ -2,6 +2,7 @@ image: node:latest
 before_script:
   - npm install -g elm surge
   - make install
-script:
-  - make
-  - surge build
+build:
+  script:
+    - make
+    - surge build
