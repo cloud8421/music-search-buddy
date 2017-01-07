@@ -20,17 +20,11 @@ type Provider
     | ITunes
 
 
-type alias Thumb =
-    { width : Int
-    , height : Int
-    , url : String
-    }
-
-
 type alias Album =
     { title : String
     , artist : String
     , url : String
-    , thumbs : List Thumb
+    , thumb : String
+    , cover : String
     , provider : Provider
     }
