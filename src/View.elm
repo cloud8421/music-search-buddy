@@ -8,7 +8,10 @@ import Types exposing (..)
 
 albumItem : Album -> Html Msg
 albumItem album =
-    li [] [ text album.title ]
+    li []
+        [ img [ src album.cover ] []
+        , p [] [ text album.title ]
+        ]
 
 
 albumList : List Album -> Html Msg
