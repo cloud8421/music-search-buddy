@@ -11,26 +11,14 @@ baseUrl =
     "https://itunes.apple.com/search"
 
 
-thumbsDecoder =
-    let
-        thumb d url =
-            map3 Thumb
-                (succeed d)
-                (succeed d)
-                (succeed url)
-    in
-        map2 (\a b -> [ a, b ])
-            (field "artworkUrl60" string |> andThen (thumb 60))
-            (field "artworkUrl100" string |> andThen (thumb 100))
-
-
 albumDecoder : Decoder Album
 albumDecoder =
-    map5 Album
+    map6 Album
         (field "collectionName" string)
         (field "artistName" string)
         (field "collectionViewUrl" string)
-        thumbsDecoder
+        (field "artworkUrl60" string)
+        (field "artworkUrl100" string)
         (succeed AppleMusic)
 
 
