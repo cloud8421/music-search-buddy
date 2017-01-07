@@ -16,21 +16,18 @@ artistDecoder =
     index 0 (field "name" string)
 
 
-thumbDecoder : Decoder Thumb
-thumbDecoder =
-    map3 Thumb
-        (field "width" int)
-        (field "height" int)
-        (field "url" string)
+imgDecoder =
+    (field "url" string)
 
 
 albumDecoder : Decoder Album
 albumDecoder =
-    map5 Album
+    map6 Album
         (field "name" string)
         (field "artists" artistDecoder)
         (at [ "external_urls", "spotify" ] string)
-        (field "images" (list thumbDecoder))
+        (field "images" (index 2 (imgDecoder)))
+        (field "images" (index 0 (imgDecoder)))
         (succeed Spotify)
 
 

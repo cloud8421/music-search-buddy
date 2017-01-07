@@ -8,7 +8,10 @@ import Types exposing (..)
 
 albumItem : Album -> Html Msg
 albumItem album =
-    li [] [ text album.title ]
+    li []
+        [ img [ src album.cover ] []
+        , p [] [ text album.title ]
+        ]
 
 
 albumList : List Album -> Html Msg
@@ -32,7 +35,8 @@ searchBox q =
 
 root : Model -> Html Msg
 root model =
-    div []
+    main_ []
         [ nav [] [ searchBox model.query ]
-        , albumList model.albums
+        , section [ class "albums" ]
+            [ albumList model.albums ]
         ]

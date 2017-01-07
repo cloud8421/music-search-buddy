@@ -1,0 +1,62 @@
+@import "bourbon/bourbon";
+
+$black: #282830;
+$gray: #60646D;
+$white: #FFFFF7;
+
+ul {
+  -webkit-margin-before: 0;
+  -webkit-margin-after: 0;
+  -webkit-margin-start: 0;
+  -webkit-margin-end: 0;
+  -webkit-padding-start: 0;
+}
+
+body {
+  background-color: $black;
+}
+
+nav {
+  @include display(flex);
+  @include justify-content(center);
+  margin-top: 2em;
+
+  input[name="q"] {
+    background-color: lighten($black, 10%);
+    padding: 1em;
+    font-size: 2em;
+    min-width: 20em;
+    color: $white;
+    border: 1px solid $gray;
+  }
+}
+
+.albums {
+  $item-size: 12em;
+
+  @include display(flex);
+  @include justify-content(center);
+  margin-top: 2em;
+
+  ul {
+    max-width: $item-size * 6;
+  }
+
+  li {
+    float: left;
+    width: $item-size;
+    list-style-type: none;
+    color: $white;
+
+    img {
+      margin: 0.5em;
+      width: $item-size - 1;
+      height: $item-size - 1;
+    }
+
+    p {
+      margin: 0.5em;
+      text-align: center;
+    }
+  }
+}
