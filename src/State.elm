@@ -2,6 +2,7 @@ module State exposing (..)
 
 import Types exposing (..)
 import Spotify
+import AppleMusic
 
 
 init : ( Model, Cmd Msg )
