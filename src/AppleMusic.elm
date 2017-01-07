@@ -8,7 +8,7 @@ import Http
 
 baseUrl : String
 baseUrl =
-    "https://itunes.apple.com/search"
+    "https://ff-ms-api.herokuapp.com/apple-music/search"
 
 
 albumDecoder : Decoder Album

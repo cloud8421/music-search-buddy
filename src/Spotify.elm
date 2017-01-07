@@ -8,7 +8,7 @@ import Http
 
 baseUrl : String
 baseUrl =
-    "https://api.spotify.com/v1/search"
+    "https://ff-ms-api.herokuapp.com/spotify/search"
 
 
 artistDecoder : Decoder String
