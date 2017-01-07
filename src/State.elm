@@ -28,7 +28,10 @@ update msg model =
             model ! []
 
         Search q ->
-            ( { model | query = Just q }
+            ( { model
+                | query = Just q
+                , albums = []
+              }
             , search q
             )
 
