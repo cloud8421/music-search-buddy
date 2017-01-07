@@ -1,1 +1,24 @@
 @import "bourbon/bourbon";
+
+$black: #282830;
+$gray: #60646D;
+$white: #FFFFF7;
+
+body {
+  background-color: $black;
+}
+
+nav {
+  @include display(flex);
+  @include justify-content(center);
+  margin-top: 2em;
+
+  input[name="q"] {
+    background-color: lighten($black, 10%);
+    border: 1px solid $gray;
+    padding: 1em;
+    font-size: 2em;
+    min-width: 20em;
+    color: $white;
+  }
+}

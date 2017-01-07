@@ -32,7 +32,8 @@ searchBox q =
 
 root : Model -> Html Msg
 root model =
-    div []
+    main_ []
         [ nav [] [ searchBox model.query ]
-        , albumList model.albums
+        , section [ class "albums" ]
+            [ albumList model.albums ]
         ]
