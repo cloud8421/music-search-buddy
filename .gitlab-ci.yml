@@ -14,14 +14,11 @@ build:
 
 deploy_production:
   stage: deploy
-  type: deploy
-  only:
-    - master
+  environment: production
   before_script:
     - npm install --silent -g elm surge
     - make install
   script:
     - make deploy
-  environment:
-    name: production
-    url: http://ms.fullyforged.com
+  only:
+    - master
