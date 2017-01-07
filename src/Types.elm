@@ -17,7 +17,7 @@ type alias Model =
 
 type Provider
     = Spotify
-    | ITunes
+    | AppleMusic
 
 
 type alias Thumb =
