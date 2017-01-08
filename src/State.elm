@@ -1,10 +1,32 @@
 module State exposing (..)
 
 import Types exposing (..)
+import Debounce
 import Spotify
 import AppleMusic
 import Album
 import Provider
+import Time exposing (Time)
+import Debounce
+
+
+searchDebounce : Time
+searchDebounce =
+    500 * Time.millisecond
+
+
+mapDebounceResult : Cmd (Result (Debounce.Msg Msg) Msg) -> Cmd Msg
+mapDebounceResult result =
+    Cmd.map
+        (\r ->
+            case r of
+                Err a_ ->
+                    DebounceMsg a_
+
+                Ok a_ ->
+                    a_
+        )
+        result
 
 
 init : ( Model, Cmd Msg )
@@ -12,6 +34,7 @@ init =
     ( { query = Nothing
       , albums = Album.empty
       , providers = Provider.empty
+      , debounce = Debounce.init
       }
     , Cmd.none
     )
@@ -34,13 +57,26 @@ update msg model =
         NoOp ->
             model ! []
 
+        DebounceMsg a ->
+            let
+                ( newDebounce, result ) =
+                    Debounce.update searchDebounce a model.debounce
+
+                newModel =
+                    { model | debounce = newDebounce }
+            in
+                newModel
+                    ! [ mapDebounceResult result ]
+
         Search q ->
-            ( { model
-                | query = Just q
-                , albums = Album.empty
-              }
-            , search q
-            )
+            let
+                newModel =
+                    { model
+                        | query = Just q
+                        , albums = Album.empty
+                    }
+            in
+                update (DebounceMsg (Debounce.Bounce (search q))) newModel
 
         SearchResult provider (Ok albums) ->
             let
