@@ -22,13 +22,12 @@ imgDecoder =
 
 albumDecoder : Decoder Album
 albumDecoder =
-    map6 Album
+    map5 Album
         (field "name" string)
         (field "artists" artistDecoder)
         (at [ "external_urls", "spotify" ] string)
         (field "images" (index 2 (imgDecoder)))
         (field "images" (index 0 (imgDecoder)))
-        (succeed Spotify)
 
 
 albumSearchDecoder : Decoder (List Album)
@@ -48,4 +47,4 @@ albumSearch q =
         req =
             Http.get (baseUrl ++ params) albumSearchDecoder
     in
-        Http.send SearchResult req
+        Http.send (SearchResult Spotify) req

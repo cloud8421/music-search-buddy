@@ -2,12 +2,14 @@ module State exposing (..)
 
 import Types exposing (..)
 import Spotify
+import AppleMusic
+import Album
 
 
 init : ( Model, Cmd Msg )
 init =
     ( { query = Nothing
-      , albums = []
+      , albums = Album.emptyAlbums
       }
     , Cmd.none
     )
@@ -16,7 +18,10 @@ init =
 search : String -> Cmd Msg
 search q =
     if String.length q >= 3 then
-        Spotify.albumSearch q
+        Cmd.batch
+            [ Spotify.albumSearch q
+            , AppleMusic.albumSearch q
+            ]
     else
         Cmd.none
 
@@ -30,15 +35,19 @@ update msg model =
         Search q ->
             ( { model
                 | query = Just q
-                , albums = []
+                , albums = Album.emptyAlbums
               }
             , search q
             )
 
-        SearchResult (Ok albums) ->
-            ( { model | albums = albums }
-            , Cmd.none
-            )
+        SearchResult provider (Ok albums) ->
+            let
+                newAlbums =
+                    Album.addMany albums provider model.albums
+            in
+                ( { model | albums = newAlbums }
+                , Cmd.none
+                )
 
-        SearchResult _ ->
+        SearchResult _ _ ->
             model ! []
