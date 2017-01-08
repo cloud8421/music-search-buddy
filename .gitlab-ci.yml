@@ -1,16 +1,16 @@
 image: node:latest
 
 stages:
-  - build
+  - test
   - deploy
 
-build:
-  stage: build
+test:
+  stage: test
   before_script:
     - npm install --silent -g elm
     - make install
   script:
-    - make
+    - make test
 
 deploy_production:
   stage: deploy
