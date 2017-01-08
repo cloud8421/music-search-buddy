@@ -7,19 +7,34 @@ import Types exposing (..)
 import Album
 
 
-albumItem : Album -> Html Msg
-albumItem album =
+providersBadge : List Provider -> Html Msg
+providersBadge providers =
+    let
+        badge provider =
+            case provider of
+                Spotify ->
+                    b [] [ text "Spotify" ]
+
+                AppleMusic ->
+                    b [] [ text "Apple Music" ]
+    in
+        span [] (List.map badge providers)
+
+
+albumItem : ( Album, List Provider ) -> Html Msg
+albumItem ( album, providers ) =
     li []
         [ img [ src album.cover ] []
         , p [] [ text album.artist ]
         , p [] [ text album.title ]
+        , providersBadge providers
         ]
 
 
-albumList : List Album -> Html Msg
+albumList : Albums -> Html Msg
 albumList albums =
     ul []
-        (List.map albumItem albums)
+        (List.map albumItem (Album.values albums))
 
 
 searchBox : Maybe String -> Html Msg
@@ -40,5 +55,5 @@ root model =
     main_ []
         [ nav [] [ searchBox model.query ]
         , section [ class "albums" ]
-            [ albumList (Album.getAlbums model.albums) ]
+            [ albumList model.albums ]
         ]

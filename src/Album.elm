@@ -15,11 +15,9 @@ emptyAlbums =
     Dict.empty
 
 
-getAlbums : Albums -> List Album
-getAlbums albums =
-    albums
-        |> Dict.values
-        |> List.map Tuple.first
+values : Albums -> List ( Album, List Provider )
+values albums =
+    Dict.values albums
 
 
 add : Albums -> Album -> Provider -> Albums
