@@ -3,44 +3,51 @@ module Album exposing (..)
 import FNV
 import Types exposing (..)
 import Dict
+import String.Extra exposing (dasherize)
+import String exposing (toLower)
 
 
 hash : Album -> Int
 hash album =
-    FNV.hashString (album.artist ++ album.title)
+    let
+        artist =
+            dasherize <| toLower album.artist
+
+        title =
+            dasherize <| toLower album.title
+    in
+        FNV.hashString (artist ++ title)
 
 
-emptyAlbums : Albums
-emptyAlbums =
+empty : Albums
+empty =
     Dict.empty
 
 
-values : Albums -> List ( Album, List Provider )
+values : Albums -> List Album
 values albums =
     Dict.values albums
 
 
-add : Albums -> Album -> Provider -> Albums
-add albums album provider =
+add : Int -> Album -> Albums -> Albums
+add id album initial =
+    if Dict.member id initial then
+        initial
+    else
+        Dict.insert id album initial
+
+
+addMany : List ( Int, Album ) -> Albums -> Albums
+addMany idPairs initial =
     let
-        id =
-            hash album
-
-        entry =
-            case Dict.get id albums of
-                Just ( existing, providers ) ->
-                    ( existing, provider :: providers )
-
-                Nothing ->
-                    ( album, [ provider ] )
+        reducer ( id, album ) current =
+            add id album current
     in
-        Dict.insert id entry albums
+        List.foldl reducer initial idPairs
 
 
-addMany : List Album -> Provider -> Albums -> Albums
-addMany results provider albums =
-    let
-        reducer album current =
-            add current album provider
-    in
-        List.foldl reducer albums results
+map : (( Int, Album ) -> a) -> Albums -> List a
+map mapFn albums =
+    albums
+        |> Dict.toList
+        |> List.map mapFn

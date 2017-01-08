@@ -1,9 +1,11 @@
 module Tests exposing (..)
 
 import Test exposing (..)
+import Fuzz exposing (string)
 import Expect
 import Types exposing (..)
 import Album
+import Dict
 
 
 spotifyBlackFieldAlbum : Album
@@ -26,18 +28,58 @@ appleMusicBlackfieldAlbum =
     }
 
 
+newAlbum : String -> Album
+newAlbum rand =
+    { artist = (rand ++ " artist")
+    , cover = ("http://example.com/" ++ rand ++ "-cover.jpg")
+    , thumb = ("http://example.com/" ++ rand ++ "-thumb.jpg")
+    , title = (rand ++ " title")
+    , url = ("http://example.com/" ++ rand ++ "-url.html")
+    }
+
+
 all : Test
 all =
     describe "Music search test suite"
         [ describe "Album"
-            [ test "Spotify album checksum" <|
+            [ fuzz string "consistent hash" <|
+                \a ->
+                    let
+                        upper =
+                            String.toUpper a
+                    in
+                        Expect.equal (Album.hash <| newAlbum a) (Album.hash <| newAlbum upper)
+            , test "add a new album to empty collection" <|
                 \() ->
-                    Expect.equal 3328543260 (Album.hash spotifyBlackFieldAlbum)
-            , test "Apple Music album checksum" <|
+                    let
+                        id =
+                            Album.hash spotifyBlackFieldAlbum
+
+                        albums =
+                            Album.add id spotifyBlackFieldAlbum Album.empty
+
+                        expected =
+                            Dict.fromList [ ( id, spotifyBlackFieldAlbum ) ]
+                    in
+                        Expect.equalDicts expected albums
+            , test "add a duplicate album" <|
                 \() ->
-                    Expect.equal 3328543260 (Album.hash appleMusicBlackfieldAlbum)
-            , test "Same checksum" <|
-                \() ->
-                    Expect.equal (Album.hash spotifyBlackFieldAlbum) (Album.hash appleMusicBlackfieldAlbum)
+                    let
+                        id =
+                            Album.hash spotifyBlackFieldAlbum
+
+                        initial =
+                            Album.add id spotifyBlackFieldAlbum Album.empty
+
+                        appleId =
+                            Album.hash appleMusicBlackfieldAlbum
+
+                        albums =
+                            Album.add appleId appleMusicBlackfieldAlbum initial
+
+                        expected =
+                            Dict.fromList [ ( id, spotifyBlackFieldAlbum ) ]
+                    in
+                        Expect.equalDicts expected albums
             ]
         ]
