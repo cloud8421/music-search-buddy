@@ -39,11 +39,12 @@ nav {
   margin-top: 2em;
 
   ul {
+    @include display(flex);
+    @include flex-wrap(wrap);
     max-width: $item-size * 6;
   }
 
   li {
-    float: left;
     width: $item-size;
     list-style-type: none;
     color: $white;
