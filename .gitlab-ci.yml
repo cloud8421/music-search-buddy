@@ -8,7 +8,6 @@ test:
   stage: test
   before_script:
     - npm install --silent -g elm
-    - make install
   script:
     - make test
 
