@@ -5,6 +5,7 @@ import Html.Attributes exposing (..)
 import Html.Events exposing (onInput)
 import Types exposing (..)
 import Album
+import Provider
 
 
 providersBadge : List Provider -> Html Msg
@@ -21,20 +22,29 @@ providersBadge providers =
         span [] (List.map badge providers)
 
 
-albumItem : ( Album, List Provider ) -> Html Msg
-albumItem ( album, providers ) =
-    li []
-        [ img [ src album.cover ] []
-        , p [] [ text album.artist ]
-        , p [] [ text album.title ]
-        , providersBadge providers
-        ]
+albumItem : Providers -> ( Int, Album ) -> Html Msg
+albumItem providers ( id, album ) =
+    let
+        badge =
+            case Provider.find id providers of
+                Just values ->
+                    providersBadge values
+
+                Nothing ->
+                    b [] [ text "No providers" ]
+    in
+        li []
+            [ img [ src album.cover ] []
+            , p [] [ text album.artist ]
+            , p [] [ text album.title ]
+            , p [] [ badge ]
+            ]
 
 
-albumList : Albums -> Html Msg
-albumList albums =
+albumList : Albums -> Providers -> Html Msg
+albumList albums providers =
     ul []
-        (List.map albumItem (Album.values albums))
+        (Album.map (albumItem providers) albums)
 
 
 searchBox : Maybe String -> Html Msg
@@ -55,5 +65,5 @@ root model =
     main_ []
         [ nav [] [ searchBox model.query ]
         , section [ class "albums" ]
-            [ albumList model.albums ]
+            [ albumList model.albums model.providers ]
         ]

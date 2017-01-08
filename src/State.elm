@@ -4,12 +4,14 @@ import Types exposing (..)
 import Spotify
 import AppleMusic
 import Album
+import Provider
 
 
 init : ( Model, Cmd Msg )
 init =
     ( { query = Nothing
-      , albums = Album.emptyAlbums
+      , albums = Album.empty
+      , providers = Provider.empty
       }
     , Cmd.none
     )
@@ -35,17 +37,32 @@ update msg model =
         Search q ->
             ( { model
                 | query = Just q
-                , albums = Album.emptyAlbums
+                , albums = Album.empty
               }
             , search q
             )
 
         SearchResult provider (Ok albums) ->
             let
+                ids =
+                    List.map Album.hash albums
+
+                providerPairs =
+                    List.map (\id -> ( id, provider )) ids
+
+                albumPairs =
+                    List.map2 (,) ids albums
+
                 newAlbums =
-                    Album.addMany albums provider model.albums
+                    Album.addMany albumPairs model.albums
+
+                newProviders =
+                    Provider.addMany providerPairs model.providers
             in
-                ( { model | albums = newAlbums }
+                ( { model
+                    | albums = newAlbums
+                    , providers = newProviders
+                  }
                 , Cmd.none
                 )
 

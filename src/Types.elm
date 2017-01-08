@@ -13,6 +13,7 @@ type Msg
 type alias Model =
     { query : Maybe String
     , albums : Albums
+    , providers : Providers
     }
 
 
@@ -21,8 +22,12 @@ type Provider
     | AppleMusic
 
 
+type alias Providers =
+    Dict Int (List Provider)
+
+
 type alias Albums =
-    Dict Int ( Album, List Provider )
+    Dict Int Album
 
 
 type alias Album =
