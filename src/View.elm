@@ -4,12 +4,14 @@ import Html exposing (..)
 import Html.Attributes exposing (..)
 import Html.Events exposing (onInput)
 import Types exposing (..)
+import Album
 
 
 albumItem : Album -> Html Msg
 albumItem album =
     li []
         [ img [ src album.cover ] []
+        , p [] [ text album.artist ]
         , p [] [ text album.title ]
         ]
 
@@ -38,5 +40,5 @@ root model =
     main_ []
         [ nav [] [ searchBox model.query ]
         , section [ class "albums" ]
-            [ albumList model.albums ]
+            [ albumList (Album.getAlbums model.albums) ]
         ]
