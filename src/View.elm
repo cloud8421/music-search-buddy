@@ -7,6 +7,7 @@ import Types exposing (..)
 import Album
 import Provider
 import RemoteData exposing (..)
+import Dict
 
 
 providersBadge : List Provider -> Html Msg
@@ -42,10 +43,10 @@ albumItem providers ( id, album ) =
             ]
 
 
-albumList : Albums -> Providers -> Html Msg
+albumList : List ( Int, Album ) -> Providers -> Html Msg
 albumList albums providers =
     ul []
-        (Album.map (albumItem providers) albums)
+        (List.map (albumItem providers) albums)
 
 
 searchBox : Maybe String -> Html Msg
@@ -71,7 +72,16 @@ root model =
         albumsSection =
             case searchData of
                 Success ( albums, providers ) ->
-                    albumList albums providers
+                    let
+                        sortedAlbums =
+                            case model.query of
+                                Nothing ->
+                                    Album.asList albums
+
+                                Just query ->
+                                    Album.sortedList query albums
+                    in
+                        albumList sortedAlbums providers
 
                 Loading ->
                     h1 [] [ text "stuff is loading" ]

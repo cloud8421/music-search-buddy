@@ -19,6 +19,10 @@ type alias Albums =
     Dict Int Album
 
 
+type alias AlbumList =
+    List ( Int, Album )
+
+
 type alias Album =
     { title : String
     , artist : String

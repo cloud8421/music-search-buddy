@@ -5,6 +5,7 @@ import Types exposing (..)
 import Dict
 import String.Extra exposing (dasherize)
 import String exposing (toLower)
+import StringDistance
 
 
 hash : Album -> Int
@@ -49,5 +50,26 @@ addMany idPairs initial =
 map : (( Int, Album ) -> a) -> Albums -> List a
 map mapFn albums =
     albums
-        |> Dict.toList
+        |> asList
         |> List.map mapFn
+
+
+compareWithQuery : String -> Album -> Float
+compareWithQuery query album =
+    StringDistance.sift3Distance (toLower album.title) (toLower query)
+
+
+sortedList : String -> Albums -> AlbumList
+sortedList query albums =
+    let
+        sortFn query ( id, album ) =
+            compareWithQuery query album
+    in
+        albums
+            |> asList
+            |> List.sortBy (sortFn query)
+
+
+asList : Albums -> AlbumList
+asList =
+    Dict.toList
