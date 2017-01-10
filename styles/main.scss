@@ -3,6 +3,7 @@
 $black: #282830;
 $gray: #60646D;
 $white: #FFFFF7;
+$main-font: "SFUIDisplay-Regular", Helvetica, Arial, sans-serif;
 
 ul {
   -webkit-margin-before: 0;
@@ -10,6 +11,10 @@ ul {
   -webkit-margin-start: 0;
   -webkit-margin-end: 0;
   -webkit-padding-start: 0;
+}
+
+input, p, h1 {
+  font-family: $main-font;
 }
 
 body {
@@ -37,6 +42,10 @@ nav {
   @include display(flex);
   @include justify-content(center);
   margin-top: 2em;
+
+  h1 {
+    color: $white;
+  }
 
   ul {
     @include display(flex);

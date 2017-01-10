@@ -4,6 +4,7 @@ import Json.Decode exposing (..)
 import Types exposing (..)
 import QueryString as QS
 import Http
+import RemoteData
 
 
 baseUrl : String
@@ -36,8 +37,7 @@ albumSearch q =
                 |> QS.add "entity" "album"
                 |> QS.add "term" q
                 |> QS.render
-
-        req =
-            Http.get (baseUrl ++ params) albumSearchDecoder
     in
-        Http.send (SearchResult AppleMusic) req
+        Http.get (baseUrl ++ params) albumSearchDecoder
+            |> RemoteData.sendRequest
+            |> Cmd.map (SearchResult AppleMusic)

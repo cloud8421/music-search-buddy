@@ -4,6 +4,7 @@ import Json.Decode exposing (..)
 import Types exposing (..)
 import QueryString as QS
 import Http
+import RemoteData
 
 
 baseUrl : String
@@ -16,6 +17,7 @@ artistDecoder =
     index 0 (field "name" string)
 
 
+imgDecoder : Decoder String
 imgDecoder =
     (field "url" string)
 
@@ -43,8 +45,7 @@ albumSearch q =
                 |> QS.add "q" ("album:" ++ q)
                 |> QS.add "type" "album"
                 |> QS.render
-
-        req =
-            Http.get (baseUrl ++ params) albumSearchDecoder
     in
-        Http.send (SearchResult Spotify) req
+        Http.get (baseUrl ++ params) albumSearchDecoder
+            |> RemoteData.sendRequest
+            |> Cmd.map (SearchResult Spotify)
