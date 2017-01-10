@@ -3,21 +3,7 @@ module Types exposing (..)
 import Http
 import Dict exposing (Dict)
 import Debounce
-
-
-type Msg
-    = NoOp
-    | DebounceMsg (Debounce.Msg Msg)
-    | Search String
-    | SearchResult Provider (Result Http.Error (List Album))
-
-
-type alias Model =
-    { query : Maybe String
-    , albums : Albums
-    , providers : Providers
-    , debounce : Debounce.Model Msg
-    }
+import RemoteData exposing (WebData)
 
 
 type Provider
@@ -39,4 +25,19 @@ type alias Album =
     , url : String
     , thumb : String
     , cover : String
+    }
+
+
+type Msg
+    = NoOp
+    | DebounceMsg (Debounce.Msg Msg)
+    | Search String
+    | SearchResult Provider (WebData (List Album))
+
+
+type alias Model =
+    { query : Maybe String
+    , albums : WebData Albums
+    , providers : WebData Providers
+    , debounce : Debounce.Model Msg
     }

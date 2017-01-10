@@ -8,6 +8,7 @@ import Album
 import Provider
 import Time exposing (Time)
 import Debounce
+import RemoteData exposing (..)
 
 
 searchDebounce : Time
@@ -32,8 +33,8 @@ mapDebounceResult result =
 init : ( Model, Cmd Msg )
 init =
     ( { query = Nothing
-      , albums = Album.empty
-      , providers = Provider.empty
+      , albums = NotAsked
+      , providers = NotAsked
       , debounce = Debounce.init
       }
     , Cmd.none
@@ -73,12 +74,12 @@ update msg model =
                 newModel =
                     { model
                         | query = Just q
-                        , albums = Album.empty
+                        , albums = Loading
                     }
             in
                 update (DebounceMsg (Debounce.Bounce (search q))) newModel
 
-        SearchResult provider (Ok albums) ->
+        SearchResult provider (Success albums) ->
             let
                 ids =
                     List.map Album.hash albums
@@ -89,15 +90,31 @@ update msg model =
                 albumPairs =
                     List.map2 (,) ids albums
 
+                currentAlbums =
+                    case model.albums of
+                        Success albums ->
+                            albums
+
+                        otherwise ->
+                            Album.empty
+
                 newAlbums =
-                    Album.addMany albumPairs model.albums
+                    Album.addMany albumPairs currentAlbums
+
+                currentProviders =
+                    case model.providers of
+                        Success providers ->
+                            providers
+
+                        otherwise ->
+                            Provider.empty
 
                 newProviders =
-                    Provider.addMany providerPairs model.providers
+                    Provider.addMany providerPairs currentProviders
             in
                 ( { model
-                    | albums = newAlbums
-                    , providers = newProviders
+                    | albums = Success newAlbums
+                    , providers = Success newProviders
                   }
                 , Cmd.none
                 )

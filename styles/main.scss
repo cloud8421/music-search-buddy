@@ -13,7 +13,7 @@ ul {
   -webkit-padding-start: 0;
 }
 
-input, p {
+input, p, h1 {
   font-family: $main-font;
 }
 
@@ -42,6 +42,10 @@ nav {
   @include display(flex);
   @include justify-content(center);
   margin-top: 2em;
+
+  h1 {
+    color: $white;
+  }
 
   ul {
     @include display(flex);

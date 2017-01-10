@@ -6,6 +6,7 @@ import Html.Events exposing (onInput)
 import Types exposing (..)
 import Album
 import Provider
+import RemoteData exposing (..)
 
 
 providersBadge : List Provider -> Html Msg
@@ -62,8 +63,27 @@ searchBox q =
 
 root : Model -> Html Msg
 root model =
-    main_ []
-        [ nav [] [ searchBox model.query ]
-        , section [ class "albums" ]
-            [ albumList model.albums model.providers ]
-        ]
+    let
+        searchData =
+            RemoteData.map (,) model.albums
+                |> RemoteData.andMap model.providers
+
+        albumsSection =
+            case searchData of
+                Success ( albums, providers ) ->
+                    albumList albums providers
+
+                Loading ->
+                    h1 [] [ text "stuff is loading" ]
+
+                NotAsked ->
+                    h1 [] [ text "search something" ]
+
+                Failure e ->
+                    h1 [] [ text <| toString e ]
+    in
+        main_ []
+            [ nav [] [ searchBox model.query ]
+            , section [ class "albums" ]
+                [ albumsSection ]
+            ]
