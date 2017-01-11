@@ -9,7 +9,7 @@ import RemoteData
 
 baseUrl : String
 baseUrl =
-    "https://ff-ms-api.herokuapp.com/spotify/search"
+    "http://ms-api.fullyforged.com/spotify/search"
 
 
 artistDecoder : Decoder String

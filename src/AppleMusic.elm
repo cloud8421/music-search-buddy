@@ -10,7 +10,7 @@ import Regex
 
 baseUrl : String
 baseUrl =
-    "https://ff-ms-api.herokuapp.com/apple-music/search"
+    "http://ms-api.fullyforged.com/apple-music/search"
 
 
 thumbTransformer : String -> String
