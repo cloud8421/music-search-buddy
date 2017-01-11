@@ -97,7 +97,9 @@ root model =
                     h1 [] [ text <| toString e ]
     in
         main_ []
-            [ nav [] [ searchBox model.query ]
+            [ nav [] [ searchBox model.query
+            , i [ class "fa fa-search"] []
+            ]
             , section [ class "albums" ]
                 [ albumsSection ]
             ]

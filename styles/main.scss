@@ -36,6 +36,7 @@ body {
 nav {
   @include display(flex);
   @include justify-content(center);
+  @include align-items(center);
   margin-top: $medium-size;
 
   input[name="q"] {
@@ -48,6 +49,11 @@ nav {
     color: $fg-primary-color;
     border: none;
   }
+
+  .fa-search {
+    margin-left: -1.5em;
+    color: $fg-secondary-color;
+  }
 }
 
 .albums {
@@ -58,7 +64,7 @@ nav {
   margin-top: 2em;
 
   h1 {
-    color: $white;
+    color: $fg-secondary-color;
   }
 
   ul {
