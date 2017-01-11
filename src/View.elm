@@ -38,9 +38,7 @@ albumItem providers ( id, album ) =
             [ figure []
                 [ img [ src album.cover ] []
                 , figcaption []
-                    [ div [ class "arrow" ] []
-                    , badge
-                    ]
+                    [ badge ]
                 ]
             , section [ class "meta" ]
                 [ p [ class "artist" ] [ text album.artist ]

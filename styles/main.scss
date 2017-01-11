@@ -74,36 +74,21 @@ nav {
 
     figure {
       margin: 0.5em;
-      position: relative;
     }
 
     figcaption {
-      position: absolute;
-      right: 0;
-      bottom: 0.25em;
-
-      .arrow {
-        position: absolute;
-        right: -1px;
-        bottom: 0;
-        border-style: solid;
-        border-width: 0 0 5em 5em;
-        border-color: transparent transparent $black transparent;
-        z-index: 1;
-      }
-
       .links {
-        width: 3em;
+        width: $item-size - 2em;
+        display: inline-block;
+        background-color: $black;
         text-align: right;
         padding: 0.5em;
-        position: absolute;
-        right: 0;
-        bottom: 0;
-        z-index: 2;
+        border: 1px solid $black;
 
         a {
           color: $white;
           margin-left: 0.4em;
+          font-size: $medium-size;
         }
       }
     }
@@ -112,6 +97,7 @@ nav {
       width: $item-size - 1;
       height: $item-size - 1;
       border: 1px solid $gray;
+      margin-bottom: -3em;
     }
 
     .meta {
