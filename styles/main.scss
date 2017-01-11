@@ -1,9 +1,20 @@
 @import "bourbon/bourbon";
+@import url('https://fonts.googleapis.com/css?family=Source+Sans+Pro');
 
 $black: #282830;
 $gray: #60646D;
-$white: #FFFFF7;
-$main-font: "SFUIDisplay-Regular", Helvetica, Arial, sans-serif;
+$light-gray: rgb(237, 241, 242);
+$white: #FFFFFF;
+$main-font: "Source Sans Pro", "Helvetica Neue", Helvetica, Arial, sans-serif;
+
+$base-size: 1em;
+$medium-size: $base-size * 1.5;
+$big-size: $base-size * 2;
+
+$fg-primary-color: $black;
+$fg-secondary-color: $gray;
+$bg-color: $white;
+$bg-secondary-color: $light-gray;
 
 ul {
   -webkit-margin-before: 0;
@@ -18,21 +29,23 @@ input, p, h1 {
 }
 
 body {
-  background-color: $black;
+  background-color: $bg-color;
 }
 
 nav {
   @include display(flex);
   @include justify-content(center);
-  margin-top: 2em;
+  margin-top: $medium-size;
 
   input[name="q"] {
-    background-color: lighten($black, 10%);
-    padding: 1em;
-    font-size: 2em;
+    $input-size: $base-size;
+
+    background-color: $bg-secondary-color;
+    padding: $input-size/2 $input-size;
+    font-size: $input-size;
     min-width: 20em;
-    color: $white;
-    border: 1px solid $gray;
+    color: $fg-primary-color;
+    border: none;
   }
 }
 
@@ -65,6 +78,7 @@ nav {
     }
 
     p {
+      color: $fg-secondary-color;
       margin: 0.5em;
       text-align: center;
     }
