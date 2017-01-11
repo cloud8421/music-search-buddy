@@ -5,11 +5,22 @@ import Types exposing (..)
 import QueryString as QS
 import Http
 import RemoteData
+import Regex
 
 
 baseUrl : String
 baseUrl =
     "https://ff-ms-api.herokuapp.com/apple-music/search"
+
+
+thumbTransformer : String -> String
+thumbTransformer url =
+    Regex.replace Regex.All (Regex.regex "60x60") (\_ -> "58x58") url
+
+
+coverTransformer : String -> String
+coverTransformer url =
+    Regex.replace Regex.All (Regex.regex "100x100") (\_ -> "580x580") url
 
 
 albumDecoder : Decoder Album
@@ -18,8 +29,8 @@ albumDecoder =
         (field "collectionName" string)
         (field "artistName" string)
         (field "collectionViewUrl" string)
-        (field "artworkUrl60" string)
-        (field "artworkUrl100" string)
+        (field "artworkUrl60" (map thumbTransformer string))
+        (field "artworkUrl100" (map coverTransformer string))
 
 
 albumSearchDecoder : Decoder (List Album)
