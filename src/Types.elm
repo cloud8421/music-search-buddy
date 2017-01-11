@@ -1,6 +1,5 @@
 module Types exposing (..)
 
-import Http
 import Dict exposing (Dict)
 import Debounce
 import RemoteData exposing (WebData)

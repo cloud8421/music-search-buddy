@@ -7,7 +7,6 @@ import Types exposing (..)
 import Album
 import Provider
 import RemoteData exposing (..)
-import Dict
 
 
 providersBadge : List Provider -> Html Msg
