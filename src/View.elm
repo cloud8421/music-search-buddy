@@ -15,12 +15,12 @@ providersBadge providers =
         badge provider =
             case provider of
                 ( Spotify, url ) ->
-                    a [ href url ] [ text "Spotify" ]
+                    a [ href url ] [ i [ class "fa fa-spotify" ] [] ]
 
                 ( AppleMusic, url ) ->
-                    a [ href url ] [ text "Apple Music" ]
+                    a [ href url ] [ i [ class "fa fa-apple" ] [] ]
     in
-        span [] (List.map badge providers)
+        span [ class "links" ] (List.map badge providers)
 
 
 albumItem : Providers -> ( Int, Album ) -> Html Msg
@@ -35,10 +35,15 @@ albumItem providers ( id, album ) =
                     b [] [ text "No providers" ]
     in
         li []
-            [ img [ src album.cover ] []
-            , p [] [ text album.artist ]
-            , p [] [ text album.title ]
-            , p [] [ badge ]
+            [ figure []
+                [ img [ src album.cover ] []
+                , figcaption []
+                    [ div [ class "arrow" ] []
+                    , badge
+                    ]
+                ]
+            , p [ class "artist" ] [ text album.artist ]
+            , p [ class "title" ] [ text album.title ]
             ]
 
 

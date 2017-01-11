@@ -7,6 +7,7 @@ $light-gray: rgb(237, 241, 242);
 $white: #FFFFFF;
 $main-font: "Source Sans Pro", "Helvetica Neue", Helvetica, Arial, sans-serif;
 
+$small-size: 0.8em;
 $base-size: 1em;
 $medium-size: $base-size * 1.5;
 $big-size: $base-size * 2;
@@ -16,7 +17,7 @@ $fg-secondary-color: $gray;
 $bg-color: $white;
 $bg-secondary-color: $light-gray;
 
-ul {
+ul, figure {
   -webkit-margin-before: 0;
   -webkit-margin-after: 0;
   -webkit-margin-start: 0;
@@ -71,16 +72,59 @@ nav {
     list-style-type: none;
     color: $white;
 
-    img {
+    figure {
       margin: 0.5em;
+      position: relative;
+    }
+
+    figcaption {
+      position: absolute;
+      right: 0;
+      bottom: 0.25em;
+
+      .arrow {
+        position: absolute;
+        right: 0;
+        bottom: 0;
+        border-style: solid;
+        border-width: 0 0 5em 5em;
+        border-color: transparent transparent $black transparent;
+        z-index: 1;
+      }
+
+      .links {
+        width: 3em;
+        text-align: right;
+        padding: 0.5em;
+        position: absolute;
+        right: 0;
+        bottom: 0;
+        z-index: 2;
+
+        a {
+          color: $white;
+          margin-left: 0.4em;
+        }
+      }
+    }
+
+    img {
       width: $item-size - 1;
       height: $item-size - 1;
+      border: 1px solid $gray;
     }
 
     p {
       color: $fg-secondary-color;
       margin: 0.5em;
-      text-align: center;
+    }
+
+    .artist {
+      font-size: $base-size;
+    }
+
+    .title {
+      font-size: $small-size;
     }
   }
 }
