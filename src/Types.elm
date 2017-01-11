@@ -5,13 +5,17 @@ import Debounce
 import RemoteData exposing (WebData)
 
 
+type alias Url =
+    String
+
+
 type Provider
     = Spotify
     | AppleMusic
 
 
 type alias Providers =
-    Dict Int (List Provider)
+    Dict Int (List ( Provider, Url ))
 
 
 type alias Albums =

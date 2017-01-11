@@ -81,14 +81,11 @@ update msg model =
 
         SearchResult provider (Success albums) ->
             let
-                ids =
-                    List.map Album.hash albums
-
-                providerPairs =
-                    List.map (\id -> ( id, provider )) ids
+                providerTriplets =
+                    List.map (\a -> ( Album.hash a, provider, a.url )) albums
 
                 albumPairs =
-                    List.map2 (,) ids albums
+                    List.map (\a -> ( Album.hash a, a )) albums
 
                 currentAlbums =
                     case model.albums of
@@ -110,7 +107,7 @@ update msg model =
                             Provider.empty
 
                 newProviders =
-                    Provider.addMany providerPairs currentProviders
+                    Provider.addMany providerTriplets currentProviders
             in
                 ( { model
                     | albums = Success newAlbums

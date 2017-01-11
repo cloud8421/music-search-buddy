@@ -9,16 +9,16 @@ import Provider
 import RemoteData exposing (..)
 
 
-providersBadge : List Provider -> Html Msg
+providersBadge : List ( Provider, Url ) -> Html Msg
 providersBadge providers =
     let
         badge provider =
             case provider of
-                Spotify ->
-                    b [] [ text "Spotify" ]
+                ( Spotify, url ) ->
+                    a [ href url ] [ text "Spotify" ]
 
-                AppleMusic ->
-                    b [] [ text "Apple Music" ]
+                ( AppleMusic, url ) ->
+                    a [ href url ] [ text "Apple Music" ]
     in
         span [] (List.map badge providers)
 
