@@ -42,8 +42,9 @@ albumSearch q =
     let
         params =
             QS.empty
-                |> QS.add "q" ("album:" ++ q)
+                |> QS.add "q" q
                 |> QS.add "type" "album"
+                |> QS.add "market" "GB"
                 |> QS.render
     in
         Http.get (baseUrl ++ params) albumSearchDecoder
