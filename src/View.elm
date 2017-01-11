@@ -42,8 +42,10 @@ albumItem providers ( id, album ) =
                     , badge
                     ]
                 ]
-            , p [ class "artist" ] [ text album.artist ]
-            , p [ class "title" ] [ text album.title ]
+            , section [ class "meta" ]
+                [ p [ class "artist" ] [ text album.artist ]
+                , p [ class "title" ] [ text album.title ]
+                ]
             ]
 
 

@@ -114,9 +114,13 @@ nav {
       border: 1px solid $gray;
     }
 
-    p {
-      color: $fg-secondary-color;
+    .meta {
       margin: 0.5em;
+      color: $fg-secondary-color;
+
+      p {
+        margin: 0;
+      }
     }
 
     .artist {
