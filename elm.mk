@@ -72,25 +72,25 @@ $(BUILD_FOLDER) $(DIST_FOLDER) bin src styles:
 	mkdir -p $@
 
 Makefile:
-	test -s $@ || echo "$$Makefile" > $@
+	@test -s $@ || echo "$$Makefile" > $@
 
 styles/main.scss: styles
-	test -s $@ || touch $@
+	@test -s $@ || touch $@
 
 src/Main.elm: src
-	test -s $@ || echo "$$main_elm" > $@
+	@test -s $@ || echo "$$main_elm" > $@
 
 src/State.elm: src
-	test -s $@ || echo "$$state_elm" > $@
+	@test -s $@ || echo "$$state_elm" > $@
 
 src/Types.elm: src
-	test -s $@ || echo "$$types_elm" > $@
+	@test -s $@ || echo "$$types_elm" > $@
 
 src/View.elm: src
-	test -s $@ || echo "$$view_elm" > $@
+	@test -s $@ || echo "$$view_elm" > $@
 
 src/boot.js: src
-	test -s $@ || echo "$$boot_js" > $@
+	@test -s $@ || echo "$$boot_js" > $@
 
 tests/Main.elm:
 	$(NODE_BIN_DIRECTORY)/elm-test init --yes
