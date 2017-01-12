@@ -9,6 +9,22 @@ import Provider
 import RemoteData exposing (..)
 
 
+spinner : Html msg
+spinner =
+    div [ class "spinner" ]
+        [ div [ class "rect1" ]
+            []
+        , div [ class "rect2" ]
+            []
+        , div [ class "rect3" ]
+            []
+        , div [ class "rect4" ]
+            []
+        , div [ class "rect5" ]
+            []
+        ]
+
+
 providersBadge : List ( Provider, Url ) -> Html Msg
 providersBadge providers =
     let
@@ -88,18 +104,19 @@ root model =
                         albumList sortedAlbums providers
 
                 Loading ->
-                    h1 [] [ text "stuff is loading" ]
+                    spinner
 
                 NotAsked ->
-                    h1 [] [ text "search something" ]
+                    h1 [] [ text "Results will appear here" ]
 
                 Failure e ->
                     h1 [] [ text <| toString e ]
     in
         main_ []
-            [ nav [] [ searchBox model.query
-            , i [ class "fa fa-search"] []
-            ]
+            [ nav []
+                [ searchBox model.query
+                , i [ class "fa fa-search" ] []
+                ]
             , section [ class "albums" ]
                 [ albumsSection ]
             ]
