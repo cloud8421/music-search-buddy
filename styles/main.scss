@@ -49,6 +49,8 @@ nav {
     min-width: 20em;
     color: $fg-primary-color;
     border: none;
+
+
   }
 
   .fa-search {
@@ -182,5 +184,53 @@ nav {
   20% {
     //Instead of the line below you could use @include transform($scale, $rotate, $transx, $transy, $skewx, $skewy, $originx, $originy)
     transform: scaleY(1.0);
+  }
+}
+
+@media (max-width: 768px) {
+  nav input[name="q"] {
+    min-width: 12em;
+  }
+
+  .albums {
+    $item-size: 6em;
+
+    ul {
+      max-width: $item-size * 6;
+      padding-left: 0.4em;
+    }
+
+    li {
+      width: $item-size;
+
+      figure, .meta {
+        margin: 0.5em;
+      }
+
+      figcaption {
+        .links {
+          width: $item-size - 1.4em;
+          padding: 0.2em;
+
+          a {
+            font-size: $base-size;
+          }
+        }
+      }
+
+      img {
+        width: $item-size - 1;
+        height: $item-size - 1;
+        margin-bottom: -2.1em;
+      }
+
+      .artist {
+        font-size: $small-size;
+      }
+
+      .title {
+        font-size: $small-size * 0.9;
+      }
+    }
   }
 }
