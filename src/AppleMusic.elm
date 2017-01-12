@@ -6,6 +6,7 @@ import QueryString as QS
 import Http
 import RemoteData
 import Regex
+import Album
 
 
 baseUrl : String
@@ -23,14 +24,27 @@ coverTransformer url =
     Regex.replace Regex.All (Regex.regex "100x100") (\_ -> "580x580") url
 
 
+idDecoder : Decoder Int
+idDecoder =
+    map2 Album.hash
+        (field "artistName" string)
+        (field "collectionName" string)
+
+
+providerTransformer : Url -> List Provider
+providerTransformer url =
+    [ AppleMusic url ]
+
+
 albumDecoder : Decoder Album
 albumDecoder =
-    map5 Album
+    map6 Album
+        idDecoder
         (field "collectionName" string)
         (field "artistName" string)
-        (field "collectionViewUrl" string)
         (field "artworkUrl60" (map thumbTransformer string))
         (field "artworkUrl100" (map coverTransformer string))
+        (field "collectionViewUrl" (map providerTransformer string))
 
 
 albumSearchDecoder : Decoder (List Album)
@@ -51,4 +65,4 @@ albumSearch q =
     in
         Http.get (baseUrl ++ params) albumSearchDecoder
             |> RemoteData.sendRequest
-            |> Cmd.map (SearchResult AppleMusic)
+            |> Cmd.map SearchResult

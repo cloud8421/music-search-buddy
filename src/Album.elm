@@ -8,16 +8,16 @@ import String exposing (toLower)
 import StringDistance
 
 
-hash : Album -> Int
-hash album =
+hash : String -> String -> Int
+hash artist title =
     let
-        artist =
-            dasherize <| toLower album.artist
+        normalizedArtist =
+            dasherize <| toLower artist
 
-        title =
-            dasherize <| toLower album.title
+        normalizedTitle =
+            dasherize <| toLower title
     in
-        FNV.hashString (artist ++ title)
+        FNV.hashString (normalizedArtist ++ normalizedTitle)
 
 
 empty : Albums
@@ -25,33 +25,26 @@ empty =
     Dict.empty
 
 
-values : Albums -> List Album
-values albums =
-    Dict.values albums
+add : Album -> Albums -> Albums
+add album initial =
+    case Dict.get album.id initial of
+        Just existing ->
+            let
+                newProviders =
+                    existing.providers ++ album.providers
+
+                merged =
+                    { existing | providers = newProviders }
+            in
+                Dict.insert existing.id merged initial
+
+        Nothing ->
+            Dict.insert album.id album initial
 
 
-add : Int -> Album -> Albums -> Albums
-add id album initial =
-    if Dict.member id initial then
-        initial
-    else
-        Dict.insert id album initial
-
-
-addMany : List ( Int, Album ) -> Albums -> Albums
+addMany : List Album -> Albums -> Albums
 addMany idPairs initial =
-    let
-        reducer ( id, album ) current =
-            add id album current
-    in
-        List.foldl reducer initial idPairs
-
-
-map : (( Int, Album ) -> a) -> Albums -> List a
-map mapFn albums =
-    albums
-        |> asList
-        |> List.map mapFn
+    List.foldl add initial idPairs
 
 
 compareWithQuery : String -> Album -> Float
@@ -59,17 +52,19 @@ compareWithQuery query album =
     StringDistance.sift3Distance (toLower album.title) (toLower query)
 
 
-sortedList : String -> Albums -> AlbumList
-sortedList query albums =
+sortedList : Maybe String -> Albums -> List ( Int, Album )
+sortedList maybeQuery albums =
     let
         sortFn query ( id, album ) =
             compareWithQuery query album
+
+        albumList =
+            albums
+                |> Dict.toList
     in
-        albums
-            |> asList
-            |> List.sortBy (sortFn query)
+        case maybeQuery of
+            Just query ->
+                List.sortBy (sortFn query) albumList
 
-
-asList : Albums -> AlbumList
-asList =
-    Dict.toList
+            Nothing ->
+                albumList

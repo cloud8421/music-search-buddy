@@ -5,7 +5,6 @@ import Debounce
 import Spotify
 import AppleMusic
 import Album
-import Provider
 import Time exposing (Time)
 import Debounce
 import RemoteData exposing (..)
@@ -34,7 +33,6 @@ init : ( Model, Cmd Msg )
 init =
     ( { query = Nothing
       , albums = NotAsked
-      , providers = NotAsked
       , debounce = Debounce.init
       }
     , Cmd.none
@@ -81,19 +79,12 @@ update msg model =
                     { model
                         | query = Just q
                         , albums = resourceStatus
-                        , providers = resourceStatus
                     }
             in
                 update (DebounceMsg (Debounce.Bounce (search q))) newModel
 
-        SearchResult provider (Success albums) ->
+        SearchResult (Success albums) ->
             let
-                providerTriplets =
-                    List.map (\a -> ( Album.hash a, provider, a.url )) albums
-
-                albumPairs =
-                    List.map (\a -> ( Album.hash a, a )) albums
-
                 currentAlbums =
                     case model.albums of
                         Success albums ->
@@ -103,25 +94,13 @@ update msg model =
                             Album.empty
 
                 newAlbums =
-                    Album.addMany albumPairs currentAlbums
-
-                currentProviders =
-                    case model.providers of
-                        Success providers ->
-                            providers
-
-                        otherwise ->
-                            Provider.empty
-
-                newProviders =
-                    Provider.addMany providerTriplets currentProviders
+                    Album.addMany albums currentAlbums
             in
                 ( { model
                     | albums = Success newAlbums
-                    , providers = Success newProviders
                   }
                 , Cmd.none
                 )
 
-        SearchResult _ _ ->
+        SearchResult _ ->
             model ! []
