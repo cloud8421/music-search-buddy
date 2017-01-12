@@ -31,15 +31,20 @@ idDecoder =
         (field "collectionName" string)
 
 
+providerTransformer : Url -> List Provider
+providerTransformer url =
+    [ AppleMusic url ]
+
+
 albumDecoder : Decoder Album
 albumDecoder =
     map6 Album
         idDecoder
         (field "collectionName" string)
         (field "artistName" string)
-        (field "collectionViewUrl" string)
         (field "artworkUrl60" (map thumbTransformer string))
         (field "artworkUrl100" (map coverTransformer string))
+        (field "collectionViewUrl" (map providerTransformer string))
 
 
 albumSearchDecoder : Decoder (List Album)
@@ -60,4 +65,4 @@ albumSearch q =
     in
         Http.get (baseUrl ++ params) albumSearchDecoder
             |> RemoteData.sendRequest
-            |> Cmd.map (SearchResult AppleMusic)
+            |> Cmd.map SearchResult

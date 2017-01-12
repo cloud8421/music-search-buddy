@@ -10,12 +10,8 @@ type alias Url =
 
 
 type Provider
-    = Spotify
-    | AppleMusic
-
-
-type alias Providers =
-    Dict Int (List ( Provider, Url ))
+    = Spotify Url
+    | AppleMusic Url
 
 
 type alias Albums =
@@ -26,9 +22,9 @@ type alias Album =
     { id : Int
     , title : String
     , artist : String
-    , url : String
     , thumb : String
     , cover : String
+    , providers : List Provider
     }
 
 
@@ -36,12 +32,11 @@ type Msg
     = NoOp
     | DebounceMsg (Debounce.Msg Msg)
     | Search String
-    | SearchResult Provider (WebData (List Album))
+    | SearchResult (WebData (List Album))
 
 
 type alias Model =
     { query : Maybe String
     , albums : WebData Albums
-    , providers : WebData Providers
     , debounce : Debounce.Model Msg
     }

@@ -30,15 +30,20 @@ idDecoder =
         (field "name" string)
 
 
+providerTransformer : Url -> List Provider
+providerTransformer url =
+    [ Spotify url ]
+
+
 albumDecoder : Decoder Album
 albumDecoder =
     map6 Album
         idDecoder
         (field "name" string)
         (field "artists" artistDecoder)
-        (at [ "external_urls", "spotify" ] string)
         (field "images" (index 2 (imgDecoder)))
         (field "images" (index 0 (imgDecoder)))
+        (at [ "external_urls", "spotify" ] (map providerTransformer string))
 
 
 albumSearchDecoder : Decoder (List Album)
@@ -58,4 +63,4 @@ albumSearch q =
     in
         Http.get (baseUrl ++ params) albumSearchDecoder
             |> RemoteData.sendRequest
-            |> Cmd.map (SearchResult Spotify)
+            |> Cmd.map SearchResult

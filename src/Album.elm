@@ -27,10 +27,19 @@ empty =
 
 add : Album -> Albums -> Albums
 add album initial =
-    if Dict.member album.id initial then
-        initial
-    else
-        Dict.insert album.id album initial
+    case Dict.get album.id initial of
+        Just existing ->
+            let
+                newProviders =
+                    existing.providers ++ album.providers
+
+                merged =
+                    { existing | providers = newProviders }
+            in
+                Dict.insert existing.id merged initial
+
+        Nothing ->
+            Dict.insert album.id album initial
 
 
 addMany : List Album -> Albums -> Albums
