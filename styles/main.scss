@@ -44,6 +44,7 @@ nav {
 
     background-color: $bg-secondary-color;
     padding: $input-size/2 $input-size;
+    padding-left: $input-size + 1em;
     font-size: $input-size;
     min-width: 20em;
     color: $fg-primary-color;
@@ -51,8 +52,9 @@ nav {
   }
 
   .fa-search {
-    margin-left: -1.5em;
+    margin-right: -1.5em;
     color: $fg-secondary-color;
+    z-index: 1;
   }
 }
 

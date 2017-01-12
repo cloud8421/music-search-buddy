@@ -114,8 +114,8 @@ root model =
     in
         main_ []
             [ nav []
-                [ searchBox model.query
-                , i [ class "fa fa-search" ] []
+                [ i [ class "fa fa-search" ] []
+                , searchBox model.query
                 ]
             , section [ class "albums" ]
                 [ albumsSection ]
