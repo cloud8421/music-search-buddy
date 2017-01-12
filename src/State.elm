@@ -71,10 +71,17 @@ update msg model =
 
         Search q ->
             let
+                resourceStatus =
+                    if String.length q >= 3 then
+                        Loading
+                    else
+                        NotAsked
+
                 newModel =
                     { model
                         | query = Just q
-                        , albums = Loading
+                        , albums = resourceStatus
+                        , providers = resourceStatus
                     }
             in
                 update (DebounceMsg (Debounce.Bounce (search q))) newModel
