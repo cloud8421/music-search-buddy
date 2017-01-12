@@ -25,11 +25,6 @@ empty =
     Dict.empty
 
 
-values : Albums -> List Album
-values albums =
-    Dict.values albums
-
-
 add : Album -> Albums -> Albums
 add album initial =
     if Dict.member album.id initial then
@@ -43,29 +38,24 @@ addMany idPairs initial =
     List.foldl add initial idPairs
 
 
-map : (( Int, Album ) -> a) -> Albums -> List a
-map mapFn albums =
-    albums
-        |> asList
-        |> List.map mapFn
-
-
 compareWithQuery : String -> Album -> Float
 compareWithQuery query album =
     StringDistance.sift3Distance (toLower album.title) (toLower query)
 
 
-sortedList : String -> Albums -> AlbumList
-sortedList query albums =
+sortedList : Maybe String -> Albums -> List ( Int, Album )
+sortedList maybeQuery albums =
     let
         sortFn query ( id, album ) =
             compareWithQuery query album
+
+        albumList =
+            albums
+                |> Dict.toList
     in
-        albums
-            |> asList
-            |> List.sortBy (sortFn query)
+        case maybeQuery of
+            Just query ->
+                List.sortBy (sortFn query) albumList
 
-
-asList : Albums -> AlbumList
-asList =
-    Dict.toList
+            Nothing ->
+                albumList

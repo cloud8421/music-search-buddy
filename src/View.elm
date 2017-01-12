@@ -94,12 +94,7 @@ root model =
                 Success ( albums, providers ) ->
                     let
                         sortedAlbums =
-                            case model.query of
-                                Nothing ->
-                                    Album.asList albums
-
-                                Just query ->
-                                    Album.sortedList query albums
+                            Album.sortedList model.query albums
                     in
                         albumList sortedAlbums providers
 
