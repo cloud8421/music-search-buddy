@@ -25,7 +25,7 @@ imgDecoder =
 
 idDecoder : Decoder Int
 idDecoder =
-    map2 Album.hash2
+    map2 Album.hash
         (field "artists" artistDecoder)
         (field "name" string)
 

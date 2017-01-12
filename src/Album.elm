@@ -8,13 +8,8 @@ import String exposing (toLower)
 import StringDistance
 
 
-hash : Album -> Int
-hash album =
-    hash2 album.artist album.title
-
-
-hash2 : String -> String -> Int
-hash2 artist title =
+hash : String -> String -> Int
+hash artist title =
     let
         normalizedArtist =
             dasherize <| toLower artist
