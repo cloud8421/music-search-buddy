@@ -1,4 +1,4 @@
-module Tests.AlbumTests exposing (all)
+module Tests.ProviderAlbumTests exposing (all)
 
 import Test exposing (..)
 import Fuzz exposing (string)
@@ -8,10 +8,9 @@ import Album
 import Dict
 
 
-spotifyBlackFieldAlbum : Album
+spotifyBlackFieldAlbum : ProviderAlbum
 spotifyBlackFieldAlbum =
-    { id = 123
-    , artist = "Blackfield"
+    { artist = "Blackfield"
     , cover = "https://i.scdn.co/image/64ff3b770e913ffee89e46d1310e9fc9900054ed"
     , thumb = "https://i.scdn.co/image/e4d8e9ad4fa005f5fdda84f008880cb4fb85facd"
     , title = "Blackfield NYC - Blackfield Live In New York City"
@@ -19,10 +18,9 @@ spotifyBlackFieldAlbum =
     }
 
 
-appleMusicBlackfieldAlbum : Album
+appleMusicBlackfieldAlbum : ProviderAlbum
 appleMusicBlackfieldAlbum =
-    { id = 123
-    , artist = "Blackfield"
+    { artist = "Blackfield"
     , cover = "http://is1.mzstatic.com/image/thumb/Music/v4/cd/b9/c6/cdb9c6b3-956e-e527-f28f-97e86d563845/source/100x100bb.jpg"
     , thumb = "http://is1.mzstatic.com/image/thumb/Music/v4/cd/b9/c6/cdb9c6b3-956e-e527-f28f-97e86d563845/source/60x60bb.jpg"
     , title = "Blackfield NYC - Blackfield Live In New York City"
@@ -30,10 +28,9 @@ appleMusicBlackfieldAlbum =
     }
 
 
-newAlbum : String -> Album
+newAlbum : String -> ProviderAlbum
 newAlbum rand =
-    { id = Album.hash2 (rand ++ " artist") (rand ++ " title")
-    , artist = (rand ++ " artist")
+    { artist = (rand ++ " artist")
     , cover = ("http://example.com/" ++ rand ++ "-cover.jpg")
     , thumb = ("http://example.com/" ++ rand ++ "-thumb.jpg")
     , title = (rand ++ " title")

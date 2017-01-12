@@ -27,7 +27,8 @@ type alias AlbumList =
 
 
 type alias Album =
-    { title : String
+    { id : Int
+    , title : String
     , artist : String
     , url : String
     , thumb : String

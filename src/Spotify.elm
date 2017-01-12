@@ -5,6 +5,7 @@ import Types exposing (..)
 import QueryString as QS
 import Http
 import RemoteData
+import Album
 
 
 baseUrl : String
@@ -22,9 +23,17 @@ imgDecoder =
     (field "url" string)
 
 
+idDecoder : Decoder Int
+idDecoder =
+    map2 Album.hash2
+        (field "artists" artistDecoder)
+        (field "name" string)
+
+
 albumDecoder : Decoder Album
 albumDecoder =
-    map5 Album
+    map6 Album
+        idDecoder
         (field "name" string)
         (field "artists" artistDecoder)
         (at [ "external_urls", "spotify" ] string)

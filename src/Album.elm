@@ -10,14 +10,19 @@ import StringDistance
 
 hash : Album -> Int
 hash album =
-    let
-        artist =
-            dasherize <| toLower album.artist
+    hash2 album.artist album.title
 
-        title =
-            dasherize <| toLower album.title
+
+hash2 : String -> String -> Int
+hash2 artist title =
+    let
+        normalizedArtist =
+            dasherize <| toLower artist
+
+        normalizedTitle =
+            dasherize <| toLower title
     in
-        FNV.hashString (artist ++ title)
+        FNV.hashString (normalizedArtist ++ normalizedTitle)
 
 
 empty : Albums

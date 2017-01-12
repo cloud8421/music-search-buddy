@@ -64,7 +64,8 @@ all =
             \() ->
                 let
                     album =
-                        { artist = "Blackfield"
+                        { id = 2839173192
+                        , artist = "Blackfield"
                         , cover = "https://i.scdn.co/image/64ff3b770e913ffee89e46d1310e9fc9900054ed"
                         , thumb = "https://i.scdn.co/image/e4d8e9ad4fa005f5fdda84f008880cb4fb85facd"
                         , title = "Blackfield"

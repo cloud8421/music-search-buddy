@@ -6,6 +6,7 @@ import QueryString as QS
 import Http
 import RemoteData
 import Regex
+import Album
 
 
 baseUrl : String
@@ -23,9 +24,16 @@ coverTransformer url =
     Regex.replace Regex.All (Regex.regex "100x100") (\_ -> "580x580") url
 
 
+idDecoder =
+    map2 Album.hash2
+        (field "artistName" string)
+        (field "collectionName" string)
+
+
 albumDecoder : Decoder Album
 albumDecoder =
-    map5 Album
+    map6 Album
+        idDecoder
         (field "collectionName" string)
         (field "artistName" string)
         (field "collectionViewUrl" string)

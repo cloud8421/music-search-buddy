@@ -89,10 +89,10 @@ update msg model =
         SearchResult provider (Success albums) ->
             let
                 providerTriplets =
-                    List.map (\a -> ( Album.hash a, provider, a.url )) albums
+                    List.map (\a -> ( a.id, provider, a.url )) albums
 
                 albumPairs =
-                    List.map (\a -> ( Album.hash a, a )) albums
+                    List.map (\a -> ( a.id, a )) albums
 
                 currentAlbums =
                     case model.albums of
