@@ -24,6 +24,7 @@ coverTransformer url =
     Regex.replace Regex.All (Regex.regex "100x100") (\_ -> "580x580") url
 
 
+idDecoder : Decoder Int
 idDecoder =
     map2 Album.hash
         (field "artistName" string)
