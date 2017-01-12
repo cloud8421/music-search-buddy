@@ -30,21 +30,17 @@ values albums =
     Dict.values albums
 
 
-add : Int -> Album -> Albums -> Albums
-add id album initial =
-    if Dict.member id initial then
+add : Album -> Albums -> Albums
+add album initial =
+    if Dict.member album.id initial then
         initial
     else
-        Dict.insert id album initial
+        Dict.insert album.id album initial
 
 
-addMany : List ( Int, Album ) -> Albums -> Albums
+addMany : List Album -> Albums -> Albums
 addMany idPairs initial =
-    let
-        reducer ( id, album ) current =
-            add id album current
-    in
-        List.foldl reducer initial idPairs
+    List.foldl add initial idPairs
 
 
 map : (( Int, Album ) -> a) -> Albums -> List a

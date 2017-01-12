@@ -91,9 +91,6 @@ update msg model =
                 providerTriplets =
                     List.map (\a -> ( a.id, provider, a.url )) albums
 
-                albumPairs =
-                    List.map (\a -> ( a.id, a )) albums
-
                 currentAlbums =
                     case model.albums of
                         Success albums ->
@@ -103,7 +100,7 @@ update msg model =
                             Album.empty
 
                 newAlbums =
-                    Album.addMany albumPairs currentAlbums
+                    Album.addMany albums currentAlbums
 
                 currentProviders =
                     case model.providers of

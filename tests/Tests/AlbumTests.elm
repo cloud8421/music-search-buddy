@@ -55,7 +55,7 @@ all =
             \() ->
                 let
                     albums =
-                        Album.add spotifyBlackFieldAlbum.id spotifyBlackFieldAlbum Album.empty
+                        Album.add spotifyBlackFieldAlbum Album.empty
 
                     expected =
                         Dict.fromList [ ( spotifyBlackFieldAlbum.id, spotifyBlackFieldAlbum ) ]
@@ -65,10 +65,10 @@ all =
             \() ->
                 let
                     initial =
-                        Album.add spotifyBlackFieldAlbum.id spotifyBlackFieldAlbum Album.empty
+                        Album.add spotifyBlackFieldAlbum Album.empty
 
                     albums =
-                        Album.add appleMusicBlackfieldAlbum.id appleMusicBlackfieldAlbum initial
+                        Album.add appleMusicBlackfieldAlbum initial
 
                     expected =
                         Dict.fromList [ ( spotifyBlackFieldAlbum.id, spotifyBlackFieldAlbum ) ]
