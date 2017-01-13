@@ -1,9 +1,9 @@
 var CACHE_NAME = 'com.fullforged.ms.v1';
 var urlsToCache = [
   '/',
-  '/boot.js',
-  '/main.js',
-  '/main.css'
+  '/boot.min.js',
+  '/main.min.js',
+  '/main.min.css'
 ];
 
 self.addEventListener('install', function(event) {
