@@ -11,10 +11,12 @@ OS := $(shell uname)
 BUILD_FOLDER = build
 DIST_FOLDER = dist
 INSTALL_TARGETS = src bin $(BUILD_FOLDER) \
+									$(BUILD_FOLDER)/images \
 									Makefile \
 									elm-package.json \
 									src/Main.elm src/State.elm src/Types.elm src/View.elm \
 									src/boot.js styles/main.scss index.html \
+									images \
 									bin/modd modd.conf \
 									bin/devd bin/wt \
 									bin/mo \
@@ -25,6 +27,9 @@ COMPILE_TARGETS = $(BUILD_FOLDER) \
 									$(BUILD_FOLDER)/main.css \
 									$(BUILD_FOLDER)/index.html \
 									$(BUILD_FOLDER)/boot.js \
+									$(BUILD_FOLDER)/images/*.jpg \
+									$(BUILD_FOLDER)/images/*.png \
+									$(BUILD_FOLDER)/images/*.ico \
 									$(CUSTOM_COMPILE_TARGETS)
 DIST_TARGETS = $(DIST_FOLDER) \
 							 $(DIST_FOLDER)/main.min.js \
@@ -68,7 +73,7 @@ help: ## Prints a help guide
 	@echo "Available tasks:"
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
 
-$(BUILD_FOLDER) $(DIST_FOLDER) bin src styles:
+$(BUILD_FOLDER) $(BUILD_FOLDER)/images $(DIST_FOLDER) bin src styles images:
 	mkdir -p $@
 
 Makefile:
@@ -143,6 +148,9 @@ $(BUILD_FOLDER)/boot.js: src/boot.js
 
 $(BUILD_FOLDER)/index.html: index.html
 	main_css=/main.css main_js=/main.js boot_js=/boot.js bin/mo index.html > $@
+
+$(BUILD_FOLDER)/images/%.jpg $(BUILD_FOLDER)/images/%.png $(BUILD_FOLDER)/images/%.ico:
+	@cp -r images/ $(BUILD_FOLDER)/images/
 
 $(DIST_FOLDER)/main.min.css: styles/*.scss
 	bin/wt compile -s compressed -b $(DIST_FOLDER)/ styles/main.scss
