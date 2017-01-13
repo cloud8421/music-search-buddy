@@ -136,7 +136,7 @@ root model =
                     spinner
 
                 NotAsked ->
-                    h1 [] [ text "Results will appear here" ]
+                    i [ class "fa fa-music background-icon" ] []
 
                 Failure e ->
                     h1 [] [ text <| toString e ]

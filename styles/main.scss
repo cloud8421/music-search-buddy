@@ -69,6 +69,12 @@ nav {
   @include justify-content(center);
   margin-top: 2em;
 
+  .background-icon {
+    margin-top: 2em;
+    color: $light-gray;
+    font-size: $base-size * 4;
+  }
+
   h1 {
     color: $fg-secondary-color;
   }
@@ -196,6 +202,10 @@ nav {
 
   .albums {
     $item-size: 6em;
+
+    .background-icon {
+      margin-top: 0.5em;
+    }
 
     ul {
       max-width: $item-size * 6;
