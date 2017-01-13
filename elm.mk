@@ -32,6 +32,9 @@ COMPILE_TARGETS = $(BUILD_FOLDER) \
 									$(BUILD_FOLDER)/images/*.ico \
 									$(CUSTOM_COMPILE_TARGETS)
 DIST_TARGETS = $(DIST_FOLDER) \
+							 $(DIST_FOLDER)/images/*.jpg \
+							 $(DIST_FOLDER)/images/*.png \
+							 $(DIST_FOLDER)/images/*.ico \
 							 $(DIST_FOLDER)/main.min.js \
 							 $(DIST_FOLDER)/boot.min.js \
 							 $(DIST_FOLDER)/main.min.css \
@@ -73,7 +76,7 @@ help: ## Prints a help guide
 	@echo "Available tasks:"
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
 
-$(BUILD_FOLDER) $(BUILD_FOLDER)/images $(DIST_FOLDER) bin src styles images:
+$(BUILD_FOLDER) $(BUILD_FOLDER)/images $(DIST_FOLDER) $(DIST_FOLDER)/images bin src styles images:
 	mkdir -p $@
 
 Makefile:
@@ -168,6 +171,9 @@ $(DIST_FOLDER)/boot.min.js: src/boot.js $(NODE_BIN_DIRECTORY)/uglifyjs
 
 $(DIST_FOLDER)/index.html: index.html
 	main_css=/main.min.css main_js=/main.min.js boot_js=/boot.min.js bin/mo index.html > $@
+
+$(DIST_FOLDER)/images/%.jpg $(DIST_FOLDER)/images/%.png $(DIST_FOLDER)/images/%.ico:
+	@cp -r images/ $(DIST_FOLDER)/images/
 
 define Makefile
 
