@@ -1,4 +1,4 @@
-var CACHE_NAME = 'com.fullforged.ms.v1';
+var CACHE_NAME = 'com.fullforged.ms.v2';
 var urlsToCache = [
   '/',
   '/boot.min.js',
