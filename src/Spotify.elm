@@ -6,6 +6,7 @@ import QueryString as QS
 import Http
 import RemoteData
 import Album
+import Country
 
 
 baseUrl : String
@@ -51,14 +52,14 @@ albumSearchDecoder =
     at [ "albums", "items" ] (list albumDecoder)
 
 
-albumSearch : String -> Cmd Msg
-albumSearch q =
+albumSearch : String -> Country -> Cmd Msg
+albumSearch q country =
     let
         params =
             QS.empty
                 |> QS.add "q" q
                 |> QS.add "type" "album"
-                |> QS.add "market" "GB"
+                |> QS.add "market" (Country.toString country)
                 |> QS.render
     in
         Http.get (baseUrl ++ params) albumSearchDecoder

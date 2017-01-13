@@ -49,14 +49,16 @@ nav {
     min-width: 20em;
     color: $fg-primary-color;
     border: none;
-
-
   }
 
   .fa-search {
     margin-right: -1.5em;
     color: $fg-secondary-color;
     z-index: 1;
+  }
+
+  select {
+    margin-left: 1em;
   }
 }
 

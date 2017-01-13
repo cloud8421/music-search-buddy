@@ -5,6 +5,11 @@ import Debounce
 import RemoteData exposing (WebData)
 
 
+type Country
+    = GB
+    | US
+
+
 type alias Url =
     String
 
@@ -31,12 +36,14 @@ type alias Album =
 type Msg
     = NoOp
     | DebounceMsg (Debounce.Msg Msg)
+    | ChangeCountry Country
     | Search String
     | SearchResult (WebData (List Album))
 
 
 type alias Model =
     { query : Maybe String
+    , country : Country
     , albums : WebData Albums
     , debounce : Debounce.Model Msg
     }

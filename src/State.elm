@@ -8,6 +8,7 @@ import Album
 import Time exposing (Time)
 import Debounce
 import RemoteData exposing (..)
+import Country
 
 
 searchDebounce : Time
@@ -32,6 +33,7 @@ mapDebounceResult result =
 init : ( Model, Cmd Msg )
 init =
     ( { query = Nothing
+      , country = Country.default
       , albums = NotAsked
       , debounce = Debounce.init
       }
@@ -39,12 +41,12 @@ init =
     )
 
 
-search : String -> Cmd Msg
-search q =
+search : String -> Country -> Cmd Msg
+search q country =
     if String.length q >= 3 then
         Cmd.batch
-            [ Spotify.albumSearch q
-            , AppleMusic.albumSearch q
+            [ Spotify.albumSearch q country
+            , AppleMusic.albumSearch q country
             ]
     else
         Cmd.none
@@ -55,6 +57,24 @@ update msg model =
     case msg of
         NoOp ->
             model ! []
+
+        ChangeCountry country ->
+            let
+                q =
+                    Maybe.withDefault "" model.query
+
+                resourceStatus =
+                    if String.length q >= 3 then
+                        Loading
+                    else
+                        NotAsked
+            in
+                ( { model
+                    | country = country
+                    , albums = resourceStatus
+                  }
+                , search q country
+                )
 
         DebounceMsg a ->
             let
@@ -81,7 +101,7 @@ update msg model =
                         , albums = resourceStatus
                     }
             in
-                update (DebounceMsg (Debounce.Bounce (search q))) newModel
+                update (DebounceMsg (Debounce.Bounce (search q newModel.country))) newModel
 
         SearchResult (Success albums) ->
             let

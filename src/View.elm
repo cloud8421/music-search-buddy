@@ -2,10 +2,12 @@ module View exposing (..)
 
 import Html exposing (..)
 import Html.Attributes exposing (..)
-import Html.Events exposing (onInput)
+import Html.Events exposing (onInput, on, targetValue)
 import Types exposing (..)
 import Album
 import RemoteData exposing (..)
+import Country
+import Json.Decode as Json
 
 
 spinner : Html msg
@@ -72,6 +74,52 @@ searchBox q =
         []
 
 
+customDecoder : Json.Decoder a -> (a -> Result String b) -> Json.Decoder b
+customDecoder d f =
+    let
+        resultDecoder x =
+            case x of
+                Ok a ->
+                    Json.succeed a
+
+                Err e ->
+                    Json.fail e
+    in
+        Json.map f d |> Json.andThen resultDecoder
+
+
+onCountryChange : (Country -> Msg) -> Attribute Msg
+onCountryChange msg =
+    let
+        decoder =
+            (customDecoder targetValue Country.fromString)
+                |> Json.map msg
+    in
+        on "change" decoder
+
+
+countryOptions : Country -> List (Html Msg)
+countryOptions selectedCountry =
+    let
+        opt country =
+            option
+                [ name <| Country.toString country
+                , value <| Country.toString country
+                , selected (country == selectedCountry)
+                ]
+                [ text <| Country.toString country ]
+    in
+        List.map opt Country.all
+
+
+countrySelect : Country -> Html Msg
+countrySelect currentCountry =
+    select
+        [ onCountryChange ChangeCountry
+        ]
+        (countryOptions currentCountry)
+
+
 root : Model -> Html Msg
 root model =
     let
@@ -97,6 +145,7 @@ root model =
             [ nav []
                 [ i [ class "fa fa-search" ] []
                 , searchBox model.query
+                , countrySelect model.country
                 ]
             , section [ class "albums" ]
                 [ albumsSection ]

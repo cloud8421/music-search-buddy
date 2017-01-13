@@ -7,6 +7,7 @@ import Http
 import RemoteData
 import Regex
 import Album
+import Country
 
 
 baseUrl : String
@@ -52,12 +53,12 @@ albumSearchDecoder =
     field "results" (list albumDecoder)
 
 
-albumSearch : String -> Cmd Msg
-albumSearch q =
+albumSearch : String -> Country -> Cmd Msg
+albumSearch q country =
     let
         params =
             QS.empty
-                |> QS.add "country" "GB"
+                |> QS.add "country" (Country.toString country)
                 |> QS.add "media" "music"
                 |> QS.add "entity" "album"
                 |> QS.add "term" q
