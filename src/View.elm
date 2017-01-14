@@ -8,6 +8,7 @@ import Album
 import RemoteData exposing (..)
 import Country
 import Json.Decode as Json
+import String.Extra exposing (ellipsis)
 
 
 spinner : Html msg
@@ -48,8 +49,8 @@ albumItem ( id, album ) =
             , figcaption []
                 [ providersBadge album.providers
                 , section [ class "meta" ]
-                    [ p [ class "artist" ] [ text album.artist ]
-                    , p [ class "title" ] [ text album.title ]
+                    [ p [ class "artist" ] [ text <| ellipsis 32 album.artist ]
+                    , p [ class "title" ] [ text <| ellipsis 64 album.title ]
                     ]
                 ]
             ]
