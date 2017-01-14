@@ -201,52 +201,35 @@ nav {
   }
 
   .albums {
-    $item-size: 6em;
-
-    .background-icon {
-      margin-top: 0.5em;
-    }
-
-    ul {
-      max-width: $item-size * 6;
-      padding-left: 0.4em;
-    }
 
     li {
-      width: $item-size;
+      width: 100%;
 
-      figure, .meta {
-        margin: 0.5em;
-      }
-
-      figcaption {
-        .links {
-          width: $item-size - 1.4em;
-          padding: 0.2em;
-
-          a {
-            font-size: $base-size;
-          }
-        }
+      figure {
+        @include display(flex);
       }
 
       img {
-        width: $item-size - 1;
-        height: $item-size - 1;
-        margin-bottom: -2.1em;
+        width: 6em;
+        height: 6em;
+        margin-bottom: 0;
       }
 
-      .artist {
-        font-size: $small-size;
-      }
+      figcaption {
+        @include flex-grow(1);
+        @include display(flex);
+        @include flex-direction(column);
 
-      .title {
-        font-size: $small-size * 0.9;
+        .links {
+          width: auto;
+          @include order(2);
+        }
+
+        .meta {
+          @include order(1);
+        }
+
       }
     }
-  }
-
-  .spinner {
-    margin-top: 20px;
   }
 }

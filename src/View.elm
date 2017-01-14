@@ -46,11 +46,12 @@ albumItem ( id, album ) =
         [ figure []
             [ img [ src album.cover ] []
             , figcaption []
-                [ providersBadge album.providers ]
-            ]
-        , section [ class "meta" ]
-            [ p [ class "artist" ] [ text album.artist ]
-            , p [ class "title" ] [ text album.title ]
+                [ providersBadge album.providers
+                , section [ class "meta" ]
+                    [ p [ class "artist" ] [ text album.artist ]
+                    , p [ class "title" ] [ text album.title ]
+                    ]
+                ]
             ]
         ]
 
