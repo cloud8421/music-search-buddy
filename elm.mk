@@ -85,8 +85,11 @@ server: ## Runs a local server for development
 watch: ## Watches files for changes, runs a local dev server and triggers live reload
 	bin/modd
 
-clean: ## Removes compiled files
-	rm $(BUILD_FOLDER)/*
+clean: ## Removes compiled files and build artifacts
+	rm -rf $(BUILD_FOLDER)/*
+	rm -rf $(DIST_FOLDER)/*
+	rm -rf elm-stuff/build-artifacts
+	rm -rf tests/elm-stuff/build-artifacts
 
 test: $(TEST_TARGETS) ## Runs unit tests via elm-test
 	$(NODE_BIN_DIRECTORY)/elm-test
