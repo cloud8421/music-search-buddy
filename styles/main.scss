@@ -36,6 +36,31 @@ input, p, h1 {
 
 body {
   background-color: $bg-color;
+  height: 100vh;
+  margin: 0;
+}
+
+main {
+  @include display(flex);
+  @include flex-direction(column);
+  min-height: 100%;
+}
+
+footer {
+  text-align: center;
+
+  a {
+    text-decoration: none;
+    color: $fg-secondary-color;
+  }
+
+  .primary {
+    font-size: $base-size;
+  }
+
+  .secondary {
+    font-size: $small-size;
+  }
 }
 
 nav {
@@ -86,6 +111,7 @@ nav {
 
   @include display(flex);
   @include justify-content(center);
+  @include flex-grow(1);
   margin-top: 2em;
 
   .background-icon {

@@ -175,6 +175,32 @@ albumsSection model =
             [ contents ]
 
 
+mainFooter : Html Msg
+mainFooter =
+    footer []
+        [ p [ class "primary" ]
+            [ text "Made by Claudio Ortolina" ]
+        , p [ class "secondary" ]
+            [ text "Contact me on "
+            , a [ href "https://twitter.com/cloud8421" ]
+                [ i [ class "fa fa-twitter" ] []
+                , text " Twitter"
+                ]
+            , text " | Source available on "
+            , a [ href "https://github.com/cloud8421/music-search-buddy" ]
+                [ i [ class "fa fa-github" ] []
+                , text " GitHub"
+                ]
+            ]
+        , p [ class "secondary" ]
+            [ text "Icon credit: "
+            , a [ href "http://dtafalonso.deviantart.com/art/Yosemite-Flat-Icons-503499921" ]
+                [ text "Yosemite Flat Icons pack by Enrique Alonso Ramírez Tejeda"
+                ]
+            ]
+        ]
+
+
 root : Model -> Html Msg
 root model =
     case model.error of
@@ -189,4 +215,5 @@ root model =
             main_ []
                 [ searchNav model
                 , albumsSection model
+                , mainFooter
                 ]
