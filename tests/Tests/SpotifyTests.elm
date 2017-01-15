@@ -66,10 +66,10 @@ all =
                 let
                     album =
                         { id = 2839173192
-                        , artist = "Blackfield"
-                        , cover = "https://i.scdn.co/image/64ff3b770e913ffee89e46d1310e9fc9900054ed"
-                        , thumb = "https://i.scdn.co/image/e4d8e9ad4fa005f5fdda84f008880cb4fb85facd"
                         , title = "Blackfield"
+                        , artist = "Blackfield"
+                        , thumb = "https://i.scdn.co/image/e4d8e9ad4fa005f5fdda84f008880cb4fb85facd"
+                        , cover = "https://i.scdn.co/image/c3fb71e1e64fd089387292820e93efe3801e8bef"
                         , providers = [ Spotify "https://open.spotify.com/album/0eOqcRD7o9mQI2hFSKkPgC" ]
                         }
 

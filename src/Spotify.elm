@@ -43,7 +43,7 @@ albumDecoder =
         (field "name" string)
         (field "artists" artistDecoder)
         (field "images" (index 2 (imgDecoder)))
-        (field "images" (index 0 (imgDecoder)))
+        (field "images" (index 1 (imgDecoder)))
         (at [ "external_urls", "spotify" ] (map providerTransformer string))
 
 

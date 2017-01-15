@@ -22,7 +22,7 @@ thumbTransformer url =
 
 coverTransformer : String -> String
 coverTransformer url =
-    Regex.replace Regex.All (Regex.regex "100x100") (\_ -> "580x580") url
+    Regex.replace Regex.All (Regex.regex "100x100") (\_ -> "178x178") url
 
 
 idDecoder : Decoder Int
