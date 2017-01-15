@@ -202,12 +202,14 @@ nav {
   }
 
   .albums {
+    font-size: 0.8em;
 
     li {
       width: 100%;
 
       figure {
         @include display(flex);
+        @include align-items(flex-end);
       }
 
       img {
@@ -224,6 +226,7 @@ nav {
         .links {
           width: auto;
           @include order(2);
+          border: 0;
         }
 
         .meta {
