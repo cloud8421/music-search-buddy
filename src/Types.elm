@@ -3,6 +3,7 @@ module Types exposing (..)
 import Dict exposing (Dict)
 import Debounce
 import RemoteData exposing (WebData)
+import Http exposing (Error)
 
 
 type Country
@@ -46,4 +47,5 @@ type alias Model =
     , country : Country
     , albums : WebData Albums
     , debounce : Debounce.Model Msg
+    , error : Maybe Error
     }

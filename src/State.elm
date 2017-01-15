@@ -36,6 +36,7 @@ init =
       , country = Country.default
       , albums = NotAsked
       , debounce = Debounce.init
+      , error = Nothing
       }
     , Cmd.none
     )
@@ -72,6 +73,7 @@ update msg model =
                 ( { model
                     | country = country
                     , albums = resourceStatus
+                    , error = Nothing
                   }
                 , search q country
                 )
@@ -99,6 +101,7 @@ update msg model =
                     { model
                         | query = Just q
                         , albums = resourceStatus
+                        , error = Nothing
                     }
             in
                 update (DebounceMsg (Debounce.Bounce (search q newModel.country))) newModel
@@ -121,6 +124,11 @@ update msg model =
                   }
                 , Cmd.none
                 )
+
+        SearchResult (Failure error) ->
+            ( { model | error = Just error }
+            , Cmd.none
+            )
 
         SearchResult _ ->
             model ! []

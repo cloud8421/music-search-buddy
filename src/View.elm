@@ -59,8 +59,18 @@ albumItem ( id, album ) =
 
 albumList : List ( Int, Album ) -> Html Msg
 albumList albums =
-    ul []
-        (List.map albumItem albums)
+    case albums of
+        [] ->
+            div [ class "no-results" ]
+                [ i [ class "fa fa-frown-o background-icon" ] []
+                , p []
+                    [ text "Sorry! No results for this search"
+                    ]
+                ]
+
+        otherwise ->
+            ul []
+                (List.map albumItem albums)
 
 
 searchBox : Maybe String -> Html Msg
@@ -122,10 +132,28 @@ countrySelect currentCountry =
         (countryOptions currentCountry)
 
 
-root : Model -> Html Msg
-root model =
+errorAlert : Html Msg
+errorAlert =
+    section [ class "errors" ]
+        [ p []
+            [ text "Aw snap! There was an error with the search. Please try again."
+            ]
+        ]
+
+
+searchNav : Model -> Html Msg
+searchNav model =
+    nav []
+        [ i [ class "fa fa-search" ] []
+        , searchBox model.query
+        , countrySelect model.country
+        ]
+
+
+albumsSection : Model -> Html Msg
+albumsSection model =
     let
-        albumsSection =
+        contents =
             case model.albums of
                 Success albums ->
                     let
@@ -143,12 +171,22 @@ root model =
                 Failure e ->
                     h1 [] [ text <| toString e ]
     in
-        main_ []
-            [ nav []
-                [ i [ class "fa fa-search" ] []
-                , searchBox model.query
-                , countrySelect model.country
+        section [ class "albums" ]
+            [ contents ]
+
+
+root : Model -> Html Msg
+root model =
+    case model.error of
+        Just _ ->
+            main_ []
+                [ searchNav model
+                , errorAlert
+                , albumsSection model
                 ]
-            , section [ class "albums" ]
-                [ albumsSection ]
-            ]
+
+        Nothing ->
+            main_ []
+                [ searchNav model
+                , albumsSection model
+                ]

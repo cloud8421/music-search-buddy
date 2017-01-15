@@ -6,6 +6,8 @@ $gray: #60646D;
 $light-gray: rgb(237, 241, 242);
 $white: #FFFFFF;
 $main-font: "Source Sans Pro", "Helvetica Neue", Helvetica, Arial, sans-serif;
+$red: #96281B;
+$light-red: #F1A9A0;
 
 $small-size: 0.8em;
 $base-size: 1em;
@@ -16,6 +18,9 @@ $fg-primary-color: $black;
 $fg-secondary-color: $gray;
 $bg-color: $white;
 $bg-secondary-color: $light-gray;
+
+$bg-error: $light-red;
+$fg-error: $red;
 
 ul, figure, figcaption {
   -webkit-margin-before: 0;
@@ -60,6 +65,20 @@ nav {
   select {
     margin-left: 1em;
   }
+}
+
+.errors {
+  @include display(flex);
+  @include justify-content(center);
+  margin: 2em;
+  border: 1px solid $fg-error;
+  background-color: $bg-error;
+  color: $fg-error;
+  border-radius: 2px;
+}
+
+.no-results {
+  text-align: center;
 }
 
 .albums {
