@@ -129,6 +129,7 @@ nav {
     @include justify-content(center);
     @include flex-wrap(wrap);
     max-width: $item-size * 6;
+    padding: 0;
   }
 
   li {
