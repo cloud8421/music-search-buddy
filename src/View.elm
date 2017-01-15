@@ -198,6 +198,11 @@ mainFooter =
                 [ text "Yosemite Flat Icons pack by Enrique Alonso Ramírez Tejeda"
                 ]
             ]
+        , p [ class "secondary" ]
+            [ text "Font Awesome by Dave Gandy - "
+            , a [ href "http://fontawesome.io" ]
+                [ text "http://fontawesome.io" ]
+            ]
         ]
 
 
