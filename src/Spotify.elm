@@ -11,7 +11,7 @@ import Country
 
 baseUrl : String
 baseUrl =
-    "https://ms-api.fullyforged.com/spotify/search"
+    "https://ms-api.fullyforged.com/search/spotify"
 
 
 artistDecoder : Decoder String

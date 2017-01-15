@@ -12,7 +12,7 @@ import Country
 
 baseUrl : String
 baseUrl =
-    "https://ms-api.fullyforged.com/apple-music/search"
+    "https://ms-api.fullyforged.com/search/apple-music"
 
 
 thumbTransformer : String -> String
