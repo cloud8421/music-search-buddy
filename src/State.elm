@@ -9,6 +9,9 @@ import Time exposing (Time)
 import Debounce
 import RemoteData exposing (..)
 import Country
+import Navigation
+import Routes
+import Http
 
 
 searchDebounce : Time
@@ -30,16 +33,23 @@ mapDebounceResult result =
         result
 
 
-init : ( Model, Cmd Msg )
-init =
-    ( { query = Nothing
-      , country = Country.default
-      , albums = NotAsked
-      , debounce = Debounce.init
-      , error = Nothing
-      }
-    , Cmd.none
-    )
+init : Navigation.Location -> ( Model, Cmd Msg )
+init location =
+    let
+        route =
+            Routes.match location.pathname
+                |> Maybe.withDefault NotFoundR
+
+        model =
+            { route = route
+            , query = Nothing
+            , country = Country.default
+            , albums = NotAsked
+            , debounce = Debounce.init
+            , error = Nothing
+            }
+    in
+        update (GoTo route) model
 
 
 search : String -> Country -> Cmd Msg
@@ -53,11 +63,60 @@ search q country =
         Cmd.none
 
 
+updateRoute : Route -> Model -> ( Model, Cmd Msg )
+updateRoute route model =
+    case route of
+        HomeR ->
+            ( { model
+                | route = route
+                , query = Nothing
+                , error = Nothing
+                , albums = NotAsked
+              }
+            , Navigation.newUrl (Routes.toString route)
+            )
+
+        SearchR encoded ->
+            let
+                decoded =
+                    Http.decodeUri encoded
+            in
+                ( { model
+                    | route = route
+                    , query = decoded
+                    , error = Nothing
+                    , albums = Loading
+                  }
+                , Cmd.batch
+                    [ search (Maybe.withDefault "" decoded) model.country
+                    , Navigation.newUrl (Routes.toString route)
+                    ]
+                )
+
+        otherwise ->
+            ( { model | route = route }
+            , Navigation.newUrl (Routes.toString route)
+            )
+
+
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
         NoOp ->
             model ! []
+
+        UrlChange location ->
+            let
+                route =
+                    Routes.match location.pathname
+                        |> Maybe.withDefault NotFoundR
+            in
+                ( { model | route = route }
+                , Cmd.none
+                )
+
+        GoTo route ->
+            updateRoute route model
 
         ChangeCountry country ->
             let
@@ -103,8 +162,14 @@ update msg model =
                         , albums = resourceStatus
                         , error = Nothing
                     }
+
+                cmd =
+                    Cmd.batch
+                        [ Navigation.newUrl (Routes.toString (SearchR q))
+                        , search q model.country
+                        ]
             in
-                update (DebounceMsg (Debounce.Bounce (search q newModel.country))) newModel
+                update (DebounceMsg (Debounce.Bounce cmd)) newModel
 
         SearchResult (Success albums) ->
             let

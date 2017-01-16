@@ -4,6 +4,13 @@ import Dict exposing (Dict)
 import Debounce
 import RemoteData exposing (WebData)
 import Http exposing (Error)
+import Navigation exposing (Location)
+
+
+type Route
+    = HomeR
+    | SearchR String
+    | NotFoundR
 
 
 type Country
@@ -36,6 +43,8 @@ type alias Album =
 
 type Msg
     = NoOp
+    | UrlChange Location
+    | GoTo Route
     | DebounceMsg (Debounce.Msg Msg)
     | ChangeCountry Country
     | Search String
@@ -43,7 +52,8 @@ type Msg
 
 
 type alias Model =
-    { query : Maybe String
+    { route : Route
+    , query : Maybe String
     , country : Country
     , albums : WebData Albums
     , debounce : Debounce.Model Msg

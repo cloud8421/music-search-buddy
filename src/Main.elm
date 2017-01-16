@@ -1,10 +1,10 @@
 module Main exposing (..)
 
-import Html
 import Platform.Sub as Sub
 import Types exposing (..)
 import State
 import View
+import Navigation
 
 
 subscriptions : Model -> Sub Msg
@@ -14,7 +14,7 @@ subscriptions model =
 
 main : Program Never Model Msg
 main =
-    Html.program
+    Navigation.program UrlChange
         { init = State.init
         , view = View.root
         , update = State.update
