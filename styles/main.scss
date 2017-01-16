@@ -98,7 +98,7 @@ nav {
   }
 
   .provider-filter {
-    margin: 1em 1em 0 1em;
+    margin: 0 1em;
 
     i, span {
       padding: 0 0.2em;
@@ -262,8 +262,14 @@ nav {
 }
 
 @media (max-width: 768px) {
-  nav input[name="q"] {
-    min-width: 12em;
+  nav {
+    .provider-filter {
+      margin: 1em 1em 0 1em;
+    }
+
+    input[name="q"] {
+      min-width: 12em;
+    }
   }
 
   .albums {
