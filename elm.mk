@@ -80,19 +80,25 @@ all: $(COMPILE_TARGETS) ## Compiles project files
 install: $(INSTALL_TARGETS) ## Installs prerequisites and generates file/folder structure
 
 server: ## Runs a local server for development
-	bin/devd $(SERVER_OPTS)
+	@echo "${WHITE}[DEV]${RESET} Start dev server"
+	@bin/devd $(SERVER_OPTS)
 
 watch: ## Watches files for changes, runs a local dev server and triggers live reload
-	bin/modd
+	@echo "${WHITE}[DEV]${RESET} Start dev watcher"
+	@bin/modd
 
 clean: ## Removes compiled files and build artifacts
-	rm -rf $(BUILD_FOLDER)/*
-	rm -rf $(DIST_FOLDER)/*
-	rm -rf elm-stuff/build-artifacts
-	rm -rf tests/elm-stuff/build-artifacts
+	@echo "${WHITE}[BUILD]${RESET} Remove build files"
+	@rm -rf $(BUILD_FOLDER)/*
+	@rm -rf elm-stuff/build-artifacts
+	@echo "${WHITE}[PROD]${RESET} Remove build files"
+	@rm -rf $(DIST_FOLDER)/*
+	@echo "${WHITE}[TEST]${RESET} Remove build files"
+	@rm -rf tests/elm-stuff/build-artifacts
 
 test: $(TEST_TARGETS) ## Runs unit tests via elm-test
-	$(NODE_BIN_DIRECTORY)/elm-test
+	@echo "${WHITE}[TEST]${RESET} Running elm-test"
+	@$(NODE_BIN_DIRECTORY)/elm-test
 
 prod: $(DIST_TARGETS) ## Minifies build folders for production usage
 
@@ -100,100 +106,122 @@ help: ##@other Show this help.
 	@perl -e '$(HELP_FUN)' $(MAKEFILE_LIST)
 
 $(BUILD_FOLDER) $(BUILD_FOLDER)/images $(DIST_FOLDER) $(DIST_FOLDER)/images bin src styles images:
-	mkdir -p $@
+	@echo "${WHITE}[SETUP]${RESET} Creating $@"
+	@mkdir -p $@
 
 Makefile:
+	@echo "${WHITE}[SETUP]${RESET} Creating Makefile"
 	@test -s $@ || echo "$$Makefile" > $@
 
 styles/main.scss: styles
+	@echo "${WHITE}[SETUP]${RESET} Creating $@"
 	@test -s $@ || touch $@
 
 src/Main.elm: src
-	@test -s $@ || echo "$$main_elm" > $@
+	@test -s $@ || (echo "$$main_elm" > $@ && echo "${WHITE}[SETUP]${RESET} Creating $@")
 
 src/State.elm: src
-	@test -s $@ || echo "$$state_elm" > $@
+	@test -s $@ || (echo "$$state_elm" > $@ && echo "${WHITE}[SETUP]${RESET} Creating $@")
 
 src/Types.elm: src
-	@test -s $@ || echo "$$types_elm" > $@
+	@test -s $@ || (echo "$$types_elm" > $@ && echo "${WHITE}[SETUP]${RESET} Creating $@")
 
 src/View.elm: src
-	@test -s $@ || echo "$$view_elm" > $@
+	@test -s $@ || (echo "$$view_elm" > $@ && echo "${WHITE}[SETUP]${RESET} Creating $@")
 
 src/boot.js: src
-	@test -s $@ || echo "$$boot_js" > $@
+	@test -s $@ || (echo "$$boot_js" > $@ && echo "${WHITE}[SETUP]${RESET} Creating $@")
 
 tests/Main.elm:
-	$(NODE_BIN_DIRECTORY)/elm-test init --yes
+	@$(NODE_BIN_DIRECTORY)/elm-test init --yes && echo "${WHITE}[SETUP]${RESET} Creating $@"
 
 index.html:
-	test -s $@ || echo "$$index_html" > $@
+	@test -s $@ || (echo "$$index_html" > $@ && echo "${WHITE}[SETUP]${RESET} Creating $@")
 
 bin/devd:
-	curl ${DEVD_URL} -L -o $@.tgz
-	tar -xzf $@.tgz -C bin/ --strip 1
-	rm $@.tgz
+	@echo "${WHITE}[SETUP]${RESET} Installing $@"
+	@curl ${DEVD_URL} -L -o $@.tgz
+	@tar -xzf $@.tgz -C bin/ --strip 1
+	@rm $@.tgz
 
 bin/wt:
-	curl ${WELLINGTON_URL} -L -o $@.tgz
-	tar -xzf $@.tgz -C bin/
-	rm $@.tgz
+	@echo "${WHITE}[SETUP]${RESET} Installing $@"
+	@curl ${WELLINGTON_URL} -L -o $@.tgz
+	@tar -xzf $@.tgz -C bin/
+	@rm $@.tgz
 
 bin/modd:
-	curl ${MODD_URL} -L -o $@.tgz
-	tar -xzf $@.tgz -C bin/ --strip 1
-	rm $@.tgz
+	@echo "${WHITE}[SETUP]${RESET} Installing $@"
+	@curl ${MODD_URL} -L -o $@.tgz
+	@tar -xzf $@.tgz -C bin/ --strip 1
+	@rm $@.tgz
 
 bin/mo:
-	curl $(MO_URL) -L -o $@
-	chmod +x $@
+	@echo "${WHITE}[SETUP]${RESET} Installing $@"
+	@curl $(MO_URL) -L -o $@
+	@chmod +x $@
 
 modd.conf:
-	echo "$$modd_config" > $@
+	@echo "${WHITE}[SETUP]${RESET} Creating $@"
+	@echo "$$modd_config" > $@
 
 elm-package.json:
-	echo "$$elm_package_json" > $@
+	@echo "${WHITE}[SETUP]${RESET} Creating $@"
+	@echo "$$elm_package_json" > $@
 
 $(NODE_BIN_DIRECTORY)/elm-test:
-	npm install elm-test@${ELM_TEST_VERSION}
+	@echo "${WHITE}[SETUP]${RESET} Installing elm-test"
+	@npm install elm-test@${ELM_TEST_VERSION}
 
 $(NODE_BIN_DIRECTORY)/uglifyjs:
-	npm install uglify-js@${UGLIFY_JS_VERSION}
+	@echo "${WHITE}[SETUP]${RESET} Installing uglify.js" 
+	@npm install uglify-js@${UGLIFY_JS_VERSION}
 
 .gitignore:
-	echo "$$gitignore" > $@
+	@echo "${WHITE}[SETUP]${RESET} Creating $@"
+	@echo "$$gitignore" > $@
 
 $(BUILD_FOLDER)/main.css: styles/*.scss
-	bin/wt compile -b $(BUILD_FOLDER)/ styles/main.scss
+	@echo "${WHITE}[BUILD]${RESET} Compiling $@"
+	@bin/wt compile -b $(BUILD_FOLDER)/ styles/main.scss
 
 $(BUILD_FOLDER)/main.js: $(ELM_FILES)
-	elm make $(ELM_ENTRY) --yes --warn --debug --output $@
+	@echo "${WHITE}[BUILD]${RESET} Compiling $@"
+	@elm make $(ELM_ENTRY) --yes --warn --debug --output $@
 
 $(BUILD_FOLDER)/boot.js: src/boot.js
-	cp $? $@
+	@echo "${WHITE}[BUILD]${RESET} Copying $@"
+	@cp $? $@
 
 $(BUILD_FOLDER)/index.html: index.html
-	main_css=/main.css main_js=/main.js boot_js=/boot.js bin/mo index.html > $@
+	@echo "${WHITE}[BUILD]${RESET} Compiling $@"
+	@main_css=/main.css main_js=/main.js boot_js=/boot.js bin/mo index.html > $@
 
 $(BUILD_FOLDER)/images/%.jpg $(BUILD_FOLDER)/images/%.png $(BUILD_FOLDER)/images/%.ico:
+	@echo "${WHITE}[BUILD]${RESET} Copying $@"
 	@cp -r images/ $(BUILD_FOLDER)/images/
 
 $(DIST_FOLDER)/main.min.css: styles/*.scss
-	bin/wt compile -s compressed -b $(DIST_FOLDER)/ styles/main.scss
-	mv $(DIST_FOLDER)/main.css $@
+	@echo "${WHITE}[PROD]${RESET} Compiling $@"
+	@bin/wt compile -s compressed -b $(DIST_FOLDER)/ styles/main.scss
+	@mv $(DIST_FOLDER)/main.css $@
 
 $(DIST_FOLDER)/main.js: $(ELM_FILES)
-	elm make $(ELM_ENTRY) --yes --warn --output $@
+	@echo "${WHITE}[PROD]${RESET} Compiling $@"
+	@elm make $(ELM_ENTRY) --yes --warn --output $@
 
 $(DIST_FOLDER)/main.min.js: $(DIST_FOLDER)/main.js $(NODE_BIN_DIRECTORY)/uglifyjs
-	$(NODE_BIN_DIRECTORY)/uglifyjs --compress --mangle --output $@ -- $(DIST_FOLDER)/main.js
-	rm $(DIST_FOLDER)/main.js
+	@echo "${WHITE}[PROD]${RESET} Minifying $@"
+	@$(NODE_BIN_DIRECTORY)/uglifyjs --compress --mangle --output $@ -- $(DIST_FOLDER)/main.js
+	@rm $(DIST_FOLDER)/main.js
 
 $(DIST_FOLDER)/boot.min.js: src/boot.js $(NODE_BIN_DIRECTORY)/uglifyjs
-	$(NODE_BIN_DIRECTORY)/uglifyjs --compress --mangle --output $@ -- src/boot.js
+	@echo "${WHITE}[PROD]${RESET} Minifying $@"
+	@$(NODE_BIN_DIRECTORY)/uglifyjs --compress --mangle --output $@ -- src/boot.js
 
 $(DIST_FOLDER)/index.html: index.html
-	main_css=/main.min.css main_js=/main.min.js boot_js=/boot.min.js bin/mo index.html > $@
+	@echo "${WHITE}[PROD]${RESET} Compiling $@"
+	@main_css=/main.min.css main_js=/main.min.js boot_js=/boot.min.js bin/mo index.html > $@
 
 $(DIST_FOLDER)/images/%.jpg $(DIST_FOLDER)/images/%.png $(DIST_FOLDER)/images/%.ico:
 	@cp -r images/ $(DIST_FOLDER)/images/

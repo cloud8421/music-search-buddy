@@ -6,15 +6,27 @@ CUSTOM_DIST_TARGETS := dist/CNAME \
 
 include elm.mk
 
-build/CNAME dist/CNAME: CNAME
-	cp $< $@
+build/CNAME: CNAME
+	@echo "${WHITE}[BUILD]${RESET} Copying $@"
+	@cp $< $@
 
-build/fastclick.js dist/fastclick.js: src/fastclick.js
-	cp $< $@
+dist/CNAME: CNAME
+	@echo "${WHITE}[PROD]${RESET} Copying $@"
+	@cp $< $@
+
+build/fastclick.js: src/fastclick.js
+	@echo "${WHITE}[BUILD]${RESET} Copying $@"
+	@cp $< $@
+
+dist/fastclick.js: src/fastclick.js
+	@echo "${WHITE}[PROD]${RESET} Copying $@"
+	@cp $< $@
 
 dist/200.html: index.html
-	main_css=/main.min.css main_js=/main.min.js boot_js=/boot.min.js bin/mo index.html > $@
+	@echo "${WHITE}[PROD]${RESET} Compiling $@"
+	@main_css=/main.min.css main_js=/main.min.js boot_js=/boot.min.js bin/mo index.html > $@
 
 deploy: prod
-	surge dist
+	@echo "${YELLOW}[PROD]${RESET} Deployment in progress"
+	@surge dist
 .PHONY: deploy
