@@ -173,20 +173,14 @@ providerFilter model =
                 ]
                 []
     in
-        case model.albums of
-            Success _ ->
-                p [ class "provider-filter" ]
-                    [ text "Show me: "
-                    , allButton
-                    , text " | "
-                    , appleMusicButton
-                    , text " | "
-                    , spotifyButton
-                    ]
-
-            otherwise ->
-                p [ class "provider-filter" ]
-                    [ text "Providers: Spotify, Apple Music" ]
+        p [ class "provider-filter" ]
+            [ text "Show me: "
+            , allButton
+            , text " | "
+            , appleMusicButton
+            , text " | "
+            , spotifyButton
+            ]
 
 
 searchNav : Model -> Html Msg

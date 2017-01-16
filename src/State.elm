@@ -134,7 +134,6 @@ update msg model =
             in
                 ( { model
                     | country = country
-                    , providerFilter = All
                     , albums = resourceStatus
                     , error = Nothing
                   }
@@ -169,7 +168,6 @@ update msg model =
                 newModel =
                     { model
                         | query = Just q
-                        , providerFilter = All
                         , albums = resourceStatus
                         , error = Nothing
                     }
