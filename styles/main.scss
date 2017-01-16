@@ -8,6 +8,7 @@ $white: #FFFFFF;
 $main-font: "Source Sans Pro", "Helvetica Neue", Helvetica, Arial, sans-serif;
 $red: #96281B;
 $light-red: #F1A9A0;
+$bright-red: #FA3A45;
 
 $small-size: 0.8em;
 $base-size: 1em;
@@ -18,6 +19,7 @@ $fg-primary-color: $black;
 $fg-secondary-color: $gray;
 $bg-color: $white;
 $bg-secondary-color: $light-gray;
+$active-color: $bright-red;
 
 $bg-error: $light-red;
 $fg-error: $red;
@@ -70,6 +72,7 @@ nav {
   @include display(flex);
   @include justify-content(center);
   @include align-items(center);
+  @include flex-wrap(wrap);
   margin-top: $medium-size;
 
   input[name="q"] {
@@ -92,6 +95,19 @@ nav {
 
   select {
     margin-left: 1em;
+  }
+
+  .provider-filter {
+    margin: 1em 1em 0 1em;
+
+    i, span {
+      padding: 0 0.2em;
+      cursor: pointer;
+
+      &.active {
+        color: $active-color;
+      }
+    }
   }
 }
 

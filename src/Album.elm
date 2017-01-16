@@ -8,6 +8,34 @@ import String exposing (toLower)
 import StringDistance
 
 
+hasAppleMusicLink : Album -> Bool
+hasAppleMusicLink album =
+    let
+        predicate provider =
+            case provider of
+                AppleMusic _ ->
+                    True
+
+                otherwise ->
+                    False
+    in
+        List.any predicate album.providers
+
+
+hasSpotifyLink : Album -> Bool
+hasSpotifyLink album =
+    let
+        predicate provider =
+            case provider of
+                Spotify _ ->
+                    True
+
+                otherwise ->
+                    False
+    in
+        List.any predicate album.providers
+
+
 hash : String -> String -> Int
 hash artist title =
     let
@@ -52,15 +80,31 @@ compareWithQuery query album =
     StringDistance.sift3Distance (toLower album.title) (toLower query)
 
 
-sortedList : Maybe String -> Albums -> List ( Int, Album )
-sortedList maybeQuery albums =
+forProvider : ProviderFilter -> List ( Int, Album ) -> List ( Int, Album )
+forProvider providerFilter albumList =
+    case providerFilter of
+        All ->
+            albumList
+
+        OnlySpotify ->
+            albumList
+                |> List.filter (\( id, album ) -> hasSpotifyLink album)
+
+        OnlyAppleMusic ->
+            albumList
+                |> List.filter (\( id, album ) -> hasAppleMusicLink album)
+
+
+toList : Albums -> List ( Int, Album )
+toList =
+    Dict.toList
+
+
+sortedList : Maybe String -> List ( Int, Album ) -> List ( Int, Album )
+sortedList maybeQuery albumList =
     let
         sortFn query ( id, album ) =
             compareWithQuery query album
-
-        albumList =
-            albums
-                |> Dict.toList
     in
         case maybeQuery of
             Just query ->

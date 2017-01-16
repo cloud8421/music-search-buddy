@@ -2,7 +2,7 @@ module View exposing (..)
 
 import Html exposing (..)
 import Html.Attributes exposing (..)
-import Html.Events exposing (onInput, on, targetValue)
+import Html.Events exposing (onClick, onInput, on, targetValue)
 import Types exposing (..)
 import Album
 import RemoteData exposing (..)
@@ -141,12 +141,61 @@ errorAlert =
         ]
 
 
+providerFilter : Model -> Html Msg
+providerFilter model =
+    let
+        allButton =
+            span
+                [ classList [ ( "active", model.providerFilter == All ) ]
+                , onClick (SetProviderFilter All)
+                ]
+                [ text "All" ]
+
+        appleMusicButton =
+            i
+                [ classList
+                    [ ( "fa", True )
+                    , ( "fa-apple", True )
+                    , ( "active", model.providerFilter == OnlyAppleMusic )
+                    ]
+                , onClick (SetProviderFilter OnlyAppleMusic)
+                ]
+                []
+
+        spotifyButton =
+            i
+                [ classList
+                    [ ( "fa", True )
+                    , ( "fa-spotify", True )
+                    , ( "active", model.providerFilter == OnlySpotify )
+                    ]
+                , onClick (SetProviderFilter OnlySpotify)
+                ]
+                []
+    in
+        case model.albums of
+            Success _ ->
+                p [ class "provider-filter" ]
+                    [ text "Show me: "
+                    , allButton
+                    , text " | "
+                    , appleMusicButton
+                    , text " | "
+                    , spotifyButton
+                    ]
+
+            otherwise ->
+                p [ class "provider-filter" ]
+                    [ text "Providers: Spotify, Apple Music" ]
+
+
 searchNav : Model -> Html Msg
 searchNav model =
     nav []
         [ i [ class "fa fa-search" ] []
         , searchBox model.query
         , countrySelect model.country
+        , providerFilter model
         ]
 
 
@@ -158,7 +207,10 @@ albumsSection model =
                 Success albums ->
                     let
                         sortedAlbums =
-                            Album.sortedList model.query albums
+                            albums
+                                |> Album.toList
+                                |> Album.forProvider model.providerFilter
+                                |> Album.sortedList model.query
                     in
                         albumList sortedAlbums
 

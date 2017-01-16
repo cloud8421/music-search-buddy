@@ -27,6 +27,12 @@ type Provider
     | AppleMusic Url
 
 
+type ProviderFilter
+    = All
+    | OnlySpotify
+    | OnlyAppleMusic
+
+
 type alias Albums =
     Dict Int Album
 
@@ -49,11 +55,13 @@ type Msg
     | ChangeCountry Country
     | Search String
     | SearchResult (WebData (List Album))
+    | SetProviderFilter ProviderFilter
 
 
 type alias Model =
     { route : Route
     , query : Maybe String
+    , providerFilter : ProviderFilter
     , country : Country
     , albums : WebData Albums
     , debounce : Debounce.Model Msg

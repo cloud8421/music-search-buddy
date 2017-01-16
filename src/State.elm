@@ -43,6 +43,7 @@ init location =
         model =
             { route = route
             , query = Nothing
+            , providerFilter = All
             , country = Country.default
             , albums = NotAsked
             , debounce = Debounce.init
@@ -70,6 +71,7 @@ updateRoute route model =
             ( { model
                 | route = route
                 , query = Nothing
+                , providerFilter = All
                 , error = Nothing
                 , albums = NotAsked
               }
@@ -83,6 +85,7 @@ updateRoute route model =
             in
                 ( { model
                     | route = route
+                    , providerFilter = All
                     , query = decoded
                     , error = Nothing
                     , albums = Loading
@@ -131,6 +134,7 @@ update msg model =
             in
                 ( { model
                     | country = country
+                    , providerFilter = All
                     , albums = resourceStatus
                     , error = Nothing
                   }
@@ -165,6 +169,7 @@ update msg model =
                 newModel =
                     { model
                         | query = Just q
+                        , providerFilter = All
                         , albums = resourceStatus
                         , error = Nothing
                     }
@@ -203,3 +208,8 @@ update msg model =
 
         SearchResult _ ->
             model ! []
+
+        SetProviderFilter providerFilter ->
+            ( { model | providerFilter = providerFilter }
+            , Cmd.none
+            )
