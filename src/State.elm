@@ -156,6 +156,12 @@ update msg model =
                     else
                         NotAsked
 
+                route =
+                    if String.length q >= 3 then
+                        SearchR q
+                    else
+                        HomeR
+
                 newModel =
                     { model
                         | query = Just q
@@ -165,7 +171,7 @@ update msg model =
 
                 cmd =
                     Cmd.batch
-                        [ Navigation.newUrl (Routes.toString (SearchR q))
+                        [ Navigation.newUrl (Routes.toString route)
                         , search q model.country
                         ]
             in
