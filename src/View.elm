@@ -185,7 +185,7 @@ providerFilter model =
 
 searchNav : Model -> Html Msg
 searchNav model =
-    nav []
+    Html.form [ id "search" ]
         [ i [ class "fa fa-search" ] []
         , searchBox model.query
         , countrySelect model.country

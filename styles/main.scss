@@ -68,7 +68,7 @@ footer {
   }
 }
 
-nav {
+#search {
   @include display(flex);
   @include justify-content(center);
   @include align-items(center);
@@ -262,7 +262,7 @@ nav {
 }
 
 @media (max-width: 768px) {
-  nav {
+  #search {
     .provider-filter {
       margin: 1em 1em 0 1em;
       font-size: $medium-size;
