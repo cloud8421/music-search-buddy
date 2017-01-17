@@ -30,3 +30,10 @@ deploy: prod
 	@echo "${YELLOW}[PROD]${RESET} Deployment in progress"
 	@surge dist
 .PHONY: deploy
+
+integration-test: $(NODE_BIN_DIRECTORY)/casperjs
+	$(NODE_BIN_DIRECTORY)/casperjs test integration-tests.js --base=$(BASE_URL)
+.PHONY: integration-test
+
+$(NODE_BIN_DIRECTORY)/casperjs:
+	npm install casperjs

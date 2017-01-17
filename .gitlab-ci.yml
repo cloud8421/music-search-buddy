@@ -3,6 +3,7 @@ image: node:latest
 stages:
   - test
   - deploy
+  - verify
 
 test:
   stage: test
@@ -19,5 +20,12 @@ deploy_production:
     - make install
   script:
     - make deploy
+  only:
+    - master
+
+verify:
+  stage: verify
+  script:
+    - BASE_URL='https://ms.fullyforged.com' make integration-test
   only:
     - master
