@@ -41,7 +41,7 @@ DIST_TARGETS = $(DIST_FOLDER) \
 							 $(DIST_FOLDER)/index.html \
 							 $(CUSTOM_DIST_TARGETS)
 TEST_TARGETS = $(NODE_BIN_DIRECTORY)/elm-test tests/Main.elm
-SERVER_OPTS = -w $(BUILD_FOLDER) -l $(BUILD_FOLDER)/ -f /index.html $(CUSTOM_SERVER_OPTS)
+SERVER_OPTS = -w $(BUILD_FOLDER) -m $(BUILD_FOLDER)/ -f /index.html $(CUSTOM_SERVER_OPTS)
 
 MO_URL = "https://raw.githubusercontent.com/tests-always-included/mo/master/mo"
 ifeq ($(OS),Darwin)
