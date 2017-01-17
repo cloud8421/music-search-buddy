@@ -1,8 +1,8 @@
 CUSTOM_COMPILE_TARGETS := build/CNAME \
-													build/fastclick.js
+                          build/fastclick.js
 CUSTOM_DIST_TARGETS := dist/CNAME \
-											 dist/fastclick.js \
-											 dist/200.html
+                       dist/fastclick.js \
+                       dist/200.html
 
 include elm.mk
 
