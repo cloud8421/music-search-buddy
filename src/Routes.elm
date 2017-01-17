@@ -1,7 +1,7 @@
 module Routes exposing (..)
 
-import Types exposing (..)
 import Route exposing (..)
+import Types exposing (..)
 
 
 home : Route.Route Types.Route

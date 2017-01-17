@@ -1,11 +1,11 @@
 module Album exposing (..)
 
-import FNV
-import Types exposing (..)
 import Dict
-import String.Extra exposing (dasherize)
+import FNV
 import String exposing (toLower)
+import String.Extra exposing (dasherize)
 import StringDistance
+import Types exposing (..)
 
 
 hasAppleMusicLink : Album -> Bool

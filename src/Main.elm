@@ -1,10 +1,10 @@
 module Main exposing (..)
 
-import Platform.Sub as Sub
-import Types exposing (..)
-import State
-import View
 import Navigation
+import Platform.Sub as Sub
+import State
+import Types exposing (..)
+import View
 
 
 subscriptions : Model -> Sub Msg

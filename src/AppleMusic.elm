@@ -1,13 +1,13 @@
 module AppleMusic exposing (..)
 
-import Json.Decode exposing (..)
-import Types exposing (..)
-import QueryString as QS
-import Http
-import RemoteData
-import Regex
 import Album
 import Country
+import Http
+import Json.Decode exposing (..)
+import QueryString as QS
+import Regex
+import RemoteData
+import Types exposing (..)
 
 
 baseUrl : String

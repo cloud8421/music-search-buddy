@@ -1,17 +1,17 @@
 module State exposing (..)
 
-import Types exposing (..)
-import Debounce
-import Spotify
-import AppleMusic
 import Album
-import Time exposing (Time)
-import Debounce
-import RemoteData exposing (..)
+import AppleMusic
 import Country
-import Navigation
-import Routes
+import Debounce
+import Debounce
 import Http
+import Navigation
+import RemoteData exposing (..)
+import Routes
+import Spotify
+import Time exposing (Time)
+import Types exposing (..)
 
 
 searchDebounce : Time

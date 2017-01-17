@@ -1,10 +1,10 @@
 module Types exposing (..)
 
-import Dict exposing (Dict)
 import Debounce
-import RemoteData exposing (WebData)
+import Dict exposing (Dict)
 import Http exposing (Error)
 import Navigation exposing (Location)
+import RemoteData exposing (WebData)
 
 
 type Route

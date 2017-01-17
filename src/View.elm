@@ -1,14 +1,14 @@
 module View exposing (..)
 
+import Album
+import Country
 import Html exposing (..)
 import Html.Attributes exposing (..)
 import Html.Events exposing (onClick, onInput, on, targetValue)
-import Types exposing (..)
-import Album
-import RemoteData exposing (..)
-import Country
 import Json.Decode as Json
+import RemoteData exposing (..)
 import String.Extra exposing (ellipsis)
+import Types exposing (..)
 
 
 spinner : Html msg

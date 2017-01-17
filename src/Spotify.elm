@@ -1,12 +1,12 @@
 module Spotify exposing (..)
 
-import Json.Decode exposing (..)
-import Types exposing (..)
-import QueryString as QS
-import Http
-import RemoteData
 import Album
 import Country
+import Http
+import Json.Decode exposing (..)
+import QueryString as QS
+import RemoteData
+import Types exposing (..)
 
 
 baseUrl : String
