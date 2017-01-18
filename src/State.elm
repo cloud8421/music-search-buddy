@@ -4,7 +4,6 @@ import Album
 import AppleMusic
 import Country
 import Debounce
-import Debounce
 import Http
 import Navigation
 import RemoteData exposing (..)
@@ -21,16 +20,16 @@ searchDebounce =
 
 mapDebounceResult : Cmd (Result (Debounce.Msg Msg) Msg) -> Cmd Msg
 mapDebounceResult result =
-    Cmd.map
-        (\r ->
+    let
+        valOrDebounce r =
             case r of
                 Err a_ ->
                     DebounceMsg a_
 
                 Ok a_ ->
                     a_
-        )
-        result
+    in
+        Cmd.map valOrDebounce result
 
 
 init : Navigation.Location -> ( Model, Cmd Msg )
