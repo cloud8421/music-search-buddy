@@ -18,13 +18,13 @@ type Country
     | US
 
 
-type alias Url =
+type alias Id =
     String
 
 
 type Provider
-    = Spotify Url
-    | AppleMusic Url
+    = Spotify
+    | AppleMusic
 
 
 type ProviderFilter
@@ -44,7 +44,26 @@ type alias Album =
     , thumb : String
     , cover : String
     , price : Maybe Float
-    , providers : List Provider
+    , providers : List ( Provider, Id )
+    }
+
+
+type alias Track =
+    { id : String
+    , title : String
+    , duration : Int
+    , number : Int
+    , disc : Int
+    , url : String
+    }
+
+
+type alias AlbumDetails =
+    { id : String
+    , artist : String
+    , title : String
+    , releaseDate : String
+    , tracks : List Track
     }
 
 
@@ -56,6 +75,7 @@ type Msg
     | ChangeCountry Country
     | Search String
     | SearchResult (WebData (List Album))
+    | AlbumDetailsResult (WebData AlbumDetails)
     | SetProviderFilter ProviderFilter
 
 
@@ -65,6 +85,7 @@ type alias Model =
     , providerFilter : ProviderFilter
     , country : Country
     , albums : WebData Albums
+    , currentAlbum : WebData AlbumDetails
     , debounce : Debounce.Model Msg
     , error : Maybe Error
     }

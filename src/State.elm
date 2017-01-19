@@ -45,6 +45,7 @@ init location =
             , providerFilter = All
             , country = Country.default
             , albums = NotAsked
+            , currentAlbum = NotAsked
             , debounce = Debounce.init
             , error = Nothing
             }
@@ -197,6 +198,11 @@ update msg model =
                   }
                 , Cmd.none
                 )
+
+        AlbumDetailsResult result ->
+            ( { model | currentAlbum = result }
+            , Cmd.none
+            )
 
         SearchResult (Failure error) ->
             ( { model | error = Just error }

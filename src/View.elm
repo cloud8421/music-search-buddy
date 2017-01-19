@@ -27,16 +27,16 @@ spinner =
         ]
 
 
-providersBadge : List Provider -> Html Msg
+providersBadge : List ( Provider, Id ) -> Html Msg
 providersBadge providers =
     let
         badge provider =
             case provider of
-                Spotify url ->
-                    a [ href url ] [ i [ class "icon-spotify" ] [] ]
+                ( Spotify, id ) ->
+                    a [ href id ] [ i [ class "icon-spotify" ] [] ]
 
-                AppleMusic url ->
-                    a [ href url ] [ i [ class "icon-appleinc" ] [] ]
+                ( AppleMusic, id ) ->
+                    a [ href id ] [ i [ class "icon-appleinc" ] [] ]
     in
         span [ class "links" ] (List.map badge providers)
 

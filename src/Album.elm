@@ -13,7 +13,7 @@ hasAppleMusicLink album =
     let
         predicate provider =
             case provider of
-                AppleMusic _ ->
+                ( AppleMusic, _ ) ->
                     True
 
                 otherwise ->
@@ -27,7 +27,7 @@ hasSpotifyLink album =
     let
         predicate provider =
             case provider of
-                Spotify _ ->
+                ( Spotify, _ ) ->
                     True
 
                 otherwise ->

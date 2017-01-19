@@ -53,7 +53,7 @@ all =
                         , thumb = "http://is1.mzstatic.com/image/thumb/Music/v4/cd/b9/c6/cdb9c6b3-956e-e527-f28f-97e86d563845/source/58x58bb.jpg"
                         , cover = "http://is1.mzstatic.com/image/thumb/Music/v4/cd/b9/c6/cdb9c6b3-956e-e527-f28f-97e86d563845/source/178x178bb.jpg"
                         , price = Just 5.99
-                        , providers = [ AppleMusic "https://itunes.apple.com/gb/album/blackfield/id416772823?uo=4" ]
+                        , providers = [ ( AppleMusic, "416772823" ) ]
                         }
 
                     decode =
