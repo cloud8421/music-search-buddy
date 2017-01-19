@@ -38,7 +38,7 @@ type alias Albums =
 
 
 type alias Album =
-    { id : Int
+    { hash : Int
     , title : String
     , artist : String
     , thumb : String

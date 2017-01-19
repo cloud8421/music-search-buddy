@@ -47,7 +47,7 @@ all =
             \() ->
                 let
                     album =
-                        { id = 2839173192
+                        { hash = 2839173192
                         , title = "Blackfield"
                         , artist = "Blackfield"
                         , thumb = "http://is1.mzstatic.com/image/thumb/Music/v4/cd/b9/c6/cdb9c6b3-956e-e527-f28f-97e86d563845/source/58x58bb.jpg"

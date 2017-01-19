@@ -10,7 +10,7 @@ import Dict
 
 spotifyBlackFieldAlbum : Album
 spotifyBlackFieldAlbum =
-    { id = Album.hash "Blackfield" "Blackfield NYC - Blackfield Live In New York City"
+    { hash = Album.hash "Blackfield" "Blackfield NYC - Blackfield Live In New York City"
     , artist = "Blackfield"
     , cover = "https://i.scdn.co/image/64ff3b770e913ffee89e46d1310e9fc9900054ed"
     , thumb = "https://i.scdn.co/image/e4d8e9ad4fa005f5fdda84f008880cb4fb85facd"
@@ -21,7 +21,7 @@ spotifyBlackFieldAlbum =
 
 appleMusicBlackfieldAlbum : Album
 appleMusicBlackfieldAlbum =
-    { id = Album.hash "Blackfield" "Blackfield NYC - Blackfield Live In New York City"
+    { hash = Album.hash "Blackfield" "Blackfield NYC - Blackfield Live In New York City"
     , artist = "Blackfield"
     , cover = "http://is1.mzstatic.com/image/thumb/Music/v4/cd/b9/c6/cdb9c6b3-956e-e527-f28f-97e86d563845/source/100x100bb.jpg"
     , thumb = "http://is1.mzstatic.com/image/thumb/Music/v4/cd/b9/c6/cdb9c6b3-956e-e527-f28f-97e86d563845/source/60x60bb.jpg"
@@ -32,7 +32,7 @@ appleMusicBlackfieldAlbum =
 
 newAlbum : String -> Album
 newAlbum rand =
-    { id = (Album.hash (rand ++ " artist") (rand ++ " title"))
+    { hash = (Album.hash (rand ++ " artist") (rand ++ " title"))
     , artist = (rand ++ " artist")
     , cover = ("http://example.com/" ++ rand ++ "-cover.jpg")
     , thumb = ("http://example.com/" ++ rand ++ "-thumb.jpg")
@@ -58,7 +58,7 @@ all =
                         Album.add spotifyBlackFieldAlbum Album.empty
 
                     expected =
-                        Dict.fromList [ ( spotifyBlackFieldAlbum.id, spotifyBlackFieldAlbum ) ]
+                        Dict.fromList [ ( spotifyBlackFieldAlbum.hash, spotifyBlackFieldAlbum ) ]
                 in
                     Expect.equalDicts expected albums
         , test "add a duplicate album" <|
@@ -72,7 +72,7 @@ all =
 
                     expected =
                         Dict.fromList
-                            [ ( spotifyBlackFieldAlbum.id
+                            [ ( spotifyBlackFieldAlbum.hash
                               , { spotifyBlackFieldAlbum
                                     | providers =
                                         [ Spotify "https://open.spotify.com/album/0eOqcRD7o9mQI2hFSKkPgC"

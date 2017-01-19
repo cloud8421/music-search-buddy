@@ -55,7 +55,7 @@ empty =
 
 add : Album -> Albums -> Albums
 add album initial =
-    case Dict.get album.id initial of
+    case Dict.get album.hash initial of
         Just existing ->
             let
                 newProviders =
@@ -64,15 +64,15 @@ add album initial =
                 merged =
                     { existing | providers = newProviders }
             in
-                Dict.insert existing.id merged initial
+                Dict.insert existing.hash merged initial
 
         Nothing ->
-            Dict.insert album.id album initial
+            Dict.insert album.hash album initial
 
 
 addMany : List Album -> Albums -> Albums
-addMany idPairs initial =
-    List.foldl add initial idPairs
+addMany hashPairs initial =
+    List.foldl add initial hashPairs
 
 
 compareWithQuery : String -> Album -> Float
@@ -88,11 +88,11 @@ forProvider providerFilter albumList =
 
         OnlySpotify ->
             albumList
-                |> List.filter (\( id, album ) -> hasSpotifyLink album)
+                |> List.filter (\( hash, album ) -> hasSpotifyLink album)
 
         OnlyAppleMusic ->
             albumList
-                |> List.filter (\( id, album ) -> hasAppleMusicLink album)
+                |> List.filter (\( hash, album ) -> hasAppleMusicLink album)
 
 
 toList : Albums -> List ( Int, Album )
@@ -103,7 +103,7 @@ toList =
 sortedList : Maybe String -> List ( Int, Album ) -> List ( Int, Album )
 sortedList maybeQuery albumList =
     let
-        sortFn query ( id, album ) =
+        sortFn query ( hash, album ) =
             compareWithQuery query album
     in
         case maybeQuery of

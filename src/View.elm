@@ -42,7 +42,7 @@ providersBadge providers =
 
 
 albumItem : ( Int, Album ) -> Html Msg
-albumItem ( id, album ) =
+albumItem ( hash, album ) =
     li []
         [ figure []
             [ img [ src album.cover ] []

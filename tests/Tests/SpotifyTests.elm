@@ -65,7 +65,7 @@ all =
             \() ->
                 let
                     album =
-                        { id = 2839173192
+                        { hash = 2839173192
                         , title = "Blackfield"
                         , artist = "Blackfield"
                         , thumb = "https://i.scdn.co/image/e4d8e9ad4fa005f5fdda84f008880cb4fb85facd"

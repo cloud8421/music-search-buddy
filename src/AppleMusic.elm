@@ -25,8 +25,8 @@ coverTransformer url =
     Regex.replace Regex.All (Regex.regex "100x100") (\_ -> "178x178") url
 
 
-idDecoder : Decoder Int
-idDecoder =
+hashDecoder : Decoder Int
+hashDecoder =
     map2 Album.hash
         (field "artistName" string)
         (field "collectionName" string)
@@ -40,7 +40,7 @@ providerTransformer url =
 albumDecoder : Decoder Album
 albumDecoder =
     map6 Album
-        idDecoder
+        hashDecoder
         (field "collectionName" string)
         (field "artistName" string)
         (field "artworkUrl60" (map thumbTransformer string))
