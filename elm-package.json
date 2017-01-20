@@ -11,16 +11,16 @@
     "dependencies": {
         "Bogdanp/elm-combine": "3.1.1 <= v < 4.0.0",
         "Bogdanp/elm-querystring": "1.0.0 <= v < 2.0.0",
+        "Bogdanp/elm-route": "4.0.0 <= v < 5.0.0",
         "Skinney/fnv": "1.0.3 <= v < 2.0.0",
         "athanclark/elm-debouncer": "3.0.2 <= v < 4.0.0",
         "elm-community/string-extra": "1.2.0 <= v < 2.0.0",
         "elm-lang/core": "5.0.0 <= v < 6.0.0",
         "elm-lang/html": "2.0.0 <= v < 3.0.0",
         "elm-lang/http": "1.0.0 <= v < 2.0.0",
-        "krisajenkins/remotedata": "4.2.1 <= v < 5.0.0",
-        "rluiten/stringdistance": "1.0.3 <= v < 2.0.0",
         "elm-lang/navigation": "2.0.1 <= v < 3.0.0",
-        "Bogdanp/elm-route": "4.0.0 <= v < 5.0.0"
+        "krisajenkins/remotedata": "4.2.1 <= v < 5.0.0",
+        "rluiten/stringdistance": "1.0.3 <= v < 2.0.0"
     },
     "elm-version": "0.18.0 <= v < 0.19.0"
 }
