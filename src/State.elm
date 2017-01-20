@@ -64,6 +64,16 @@ search q country =
         Cmd.none
 
 
+lookup : Provider -> Id -> Country -> Cmd Msg
+lookup provider id country =
+    case provider of
+        Spotify ->
+            Spotify.albumDetails id country
+
+        AppleMusic ->
+            AppleMusic.albumDetails id country
+
+
 updateRoute : Route -> Model -> ( Model, Cmd Msg )
 updateRoute route model =
     case route of
@@ -95,6 +105,18 @@ updateRoute route model =
                     , Navigation.newUrl (Routes.toString route)
                     ]
                 )
+
+        LookupR provider id ->
+            ( { model
+                | route = route
+                , error = Nothing
+                , currentAlbum = Loading
+              }
+            , Cmd.batch
+                [ lookup provider id model.country
+                , Navigation.newUrl (Routes.toString route)
+                ]
+            )
 
         otherwise ->
             ( { model | route = route }

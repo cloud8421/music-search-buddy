@@ -10,6 +10,7 @@ import RemoteData exposing (WebData)
 type Route
     = HomeR
     | SearchR String
+    | LookupR Provider String
     | NotFoundR
 
 

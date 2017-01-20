@@ -4,11 +4,30 @@ import Album
 import Country
 import Html exposing (..)
 import Html.Attributes exposing (..)
-import Html.Events exposing (onClick, onInput, on, targetValue)
+import Html.Events exposing (onClick, onInput, on, targetValue, onWithOptions)
 import Json.Decode as Json
 import RemoteData exposing (..)
+import Routes
 import String.Extra exposing (ellipsis)
 import Types exposing (..)
+
+
+iconLink : Route -> Html Msg -> List (Attribute Msg) -> Html Msg
+iconLink route icon attrs =
+    let
+        opts =
+            { preventDefault = True
+            , stopPropagation = False
+            }
+
+        defaultAttrs =
+            [ href (Routes.toString route)
+            , onWithOptions "click" opts (Json.succeed <| GoTo route)
+            ]
+    in
+        a
+            (defaultAttrs ++ attrs)
+            [ icon ]
 
 
 spinner : Html msg
@@ -33,10 +52,14 @@ providersBadge providers =
         badge provider =
             case provider of
                 ( Spotify, id ) ->
-                    a [ href id ] [ i [ class "icon-spotify" ] [] ]
+                    iconLink (LookupR Spotify id)
+                        (i [ class "icon-spotify" ] [])
+                        []
 
                 ( AppleMusic, id ) ->
-                    a [ href id ] [ i [ class "icon-appleinc" ] [] ]
+                    iconLink (LookupR AppleMusic id)
+                        (i [ class "icon-appleinc" ] [])
+                        []
     in
         span [ class "links" ] (List.map badge providers)
 
@@ -219,6 +242,21 @@ albumsSection model =
             [ contents ]
 
 
+albumDetailsPreview : Model -> Html Msg
+albumDetailsPreview model =
+    case model.currentAlbum of
+        Success albumDetails ->
+            div [ class "album-details" ]
+                [ h1 [] [ text albumDetails.title ]
+                ]
+
+        Loading ->
+            spinner
+
+        otherwise ->
+            div [] []
+
+
 mainFooter : Html Msg
 mainFooter =
     footer []
@@ -258,6 +296,7 @@ root model =
                 [ searchNav model
                 , errorAlert
                 , albumsSection model
+                , albumDetailsPreview model
                 , mainFooter
                 ]
 
@@ -265,5 +304,6 @@ root model =
             main_ []
                 [ searchNav model
                 , albumsSection model
+                , albumDetailsPreview model
                 , mainFooter
                 ]
