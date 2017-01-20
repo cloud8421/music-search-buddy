@@ -226,6 +226,20 @@ update msg model =
             , Cmd.none
             )
 
+        CloseAlbumDetails ->
+            let
+                newModel =
+                    { model | currentAlbum = NotAsked }
+            in
+                case model.albums of
+                    NotAsked ->
+                        updateRoute HomeR newModel
+
+                    otherwise ->
+                        ( newModel
+                        , Navigation.back 1
+                        )
+
         SearchResult (Failure error) ->
             ( { model | error = Just error }
             , Cmd.none

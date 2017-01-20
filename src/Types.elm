@@ -77,6 +77,7 @@ type Msg
     | Search String
     | SearchResult (WebData (List Album))
     | AlbumDetailsResult (WebData AlbumDetails)
+    | CloseAlbumDetails
     | SetProviderFilter ProviderFilter
 
 

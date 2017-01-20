@@ -247,7 +247,9 @@ albumDetailsPreview model =
     case model.currentAlbum of
         Success albumDetails ->
             div [ class "album-details" ]
-                [ h1 [] [ text albumDetails.title ]
+                [ p [ onClick CloseAlbumDetails ]
+                    [ text "X" ]
+                , h1 [] [ text albumDetails.title ]
                 ]
 
         Loading ->
