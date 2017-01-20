@@ -2,6 +2,7 @@ module View exposing (..)
 
 import Album
 import Country
+import Date
 import Html exposing (..)
 import Html.Attributes exposing (..)
 import Html.Events exposing (onClick, onInput, on, targetValue, onWithOptions)
@@ -264,16 +265,32 @@ trackList tracks =
 
         row track =
             li []
-                [ span [ class "number" ] [ text <| toString track.number ]
+                [ a
+                    [ class "play"
+                    , href track.url
+                    ]
+                    [ i [ class "fa fa-play-circle" ] [] ]
+                , span [ class "number" ] [ text <| toString track.number ]
                 , span [ class "title" ] [ text track.title ]
                 , span [ class "duration" ] [ text <| formatDuration track.duration ]
                 ]
 
         orderedTracks =
             List.sortBy .number tracks
+
+        totalDuration =
+            tracks
+                |> List.map .duration
+                |> List.foldl (+) 0
+
+        totalDurationRow =
+            li []
+                [ span [ class "title" ] [ text "Total" ]
+                , span [ class "duration" ] [ text <| formatDuration totalDuration ]
+                ]
     in
         ul [ class "track-list" ]
-            (List.map row orderedTracks)
+            ((List.map row orderedTracks) ++ [ totalDurationRow ])
 
 
 albumDetailsPreview : Model -> Html Msg
@@ -287,13 +304,17 @@ albumDetailsPreview model =
                         , onClick CloseAlbumDetails
                         ]
                         []
-                    , h1 [] [ text albumDetails.title ]
+                    , h1 []
+                        [ a [ href albumDetails.url ]
+                            [ i [ class "fa fa-play-circle" ] [] ]
+                        , text albumDetails.title
+                        ]
                     , h2 [] [ text albumDetails.artist ]
                     , section [ class "tracks" ]
                         [ figure []
                             [ img [ src albumDetails.cover ] []
                             , figcaption []
-                                [ text albumDetails.releaseDate
+                                [ p [] [ text <| toString <| Date.year albumDetails.releaseDate ]
                                 ]
                             ]
                         , trackList albumDetails.tracks

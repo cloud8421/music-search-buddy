@@ -2,6 +2,7 @@ module AppleMusic exposing (..)
 
 import Album
 import Country
+import Date exposing (Date)
 import Http
 import Json.Decode exposing (..)
 import QueryString as QS
@@ -13,6 +14,25 @@ import Types exposing (..)
 type LookupResult
     = AlbumDetailsLookup AlbumDetails
     | TrackLookup Track
+
+
+customDecoder : Decoder a -> (a -> Result String b) -> Decoder b
+customDecoder d f =
+    let
+        resultDecoder x =
+            case x of
+                Ok a ->
+                    succeed a
+
+                Err e ->
+                    fail e
+    in
+        map f d |> andThen resultDecoder
+
+
+dateDecoder : Decoder Date
+dateDecoder =
+    customDecoder string Date.fromString
 
 
 thumbTransformer : String -> String
@@ -67,12 +87,13 @@ trackDecoder =
 
 albumDetailsDecoder : Decoder AlbumDetails
 albumDetailsDecoder =
-    map6 AlbumDetails
+    map7 AlbumDetails
         (map toString (field "collectionId" int))
         (field "artistName" string)
         (field "collectionName" string)
-        (field "releaseDate" string)
+        (field "releaseDate" dateDecoder)
         (field "artworkUrl100" (map coverTransformer string))
+        (field "collectionViewUrl" string)
         (succeed [])
 
 

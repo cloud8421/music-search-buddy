@@ -6,6 +6,7 @@ import Http exposing (Error)
 import Navigation exposing (Location)
 import RemoteData exposing (WebData)
 import Time exposing (Time)
+import Date exposing (Date)
 
 
 type Route
@@ -64,8 +65,9 @@ type alias AlbumDetails =
     { id : String
     , artist : String
     , title : String
-    , releaseDate : String
+    , releaseDate : Date
     , cover : String
+    , url : String
     , tracks : List Track
     }
 

@@ -2,6 +2,7 @@ module Spotify exposing (..)
 
 import Album
 import Country
+import Date exposing (Date)
 import Http
 import Json.Decode exposing (..)
 import QueryString as QS
@@ -12,6 +13,25 @@ import Types exposing (..)
 baseUrl : String
 baseUrl =
     "https://ms-api.fullyforged.com/search/spotify"
+
+
+customDecoder : Decoder a -> (a -> Result String b) -> Decoder b
+customDecoder d f =
+    let
+        resultDecoder x =
+            case x of
+                Ok a ->
+                    succeed a
+
+                Err e ->
+                    fail e
+    in
+        map f d |> andThen resultDecoder
+
+
+dateDecoder : Decoder Date
+dateDecoder =
+    customDecoder string Date.fromString
 
 
 artistDecoder : Decoder String
@@ -66,12 +86,13 @@ trackDecoder =
 
 albumDetailsDecoder : Decoder AlbumDetails
 albumDetailsDecoder =
-    map6 AlbumDetails
+    map7 AlbumDetails
         (field "id" string)
         (field "artists" artistDecoder)
         (field "name" string)
-        (field "release_date" string)
+        (field "release_date" dateDecoder)
         (field "images" (index 1 (imgDecoder)))
+        (field "uri" string)
         (at [ "tracks", "items" ] (list trackDecoder))
 
 
