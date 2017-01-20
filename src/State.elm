@@ -196,8 +196,8 @@ update msg model =
 
                 cmd =
                     Cmd.batch
-                        [ Navigation.newUrl (Routes.toString route)
-                        , search q model.country
+                        [ search q model.country
+                        , Navigation.newUrl (Routes.toString route)
                         ]
             in
                 update (DebounceMsg (Debounce.Bounce cmd)) newModel
