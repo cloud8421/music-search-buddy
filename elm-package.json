@@ -9,6 +9,7 @@
     ],
     "exposed-modules": [],
     "dependencies": {
+        "Bogdanp/elm-combine": "3.1.1 <= v < 4.0.0",
         "Bogdanp/elm-querystring": "1.0.0 <= v < 2.0.0",
         "Skinney/fnv": "1.0.3 <= v < 2.0.0",
         "athanclark/elm-debouncer": "3.0.2 <= v < 4.0.0",
