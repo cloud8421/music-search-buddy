@@ -380,4 +380,44 @@ footer {
       }
     }
   }
+
+  .album-details {
+    margin-bottom: 2em;
+
+    .container {
+      width: 60%;
+    }
+
+    .close-icon {
+      font-size: $base-size;
+    }
+
+    h1 {
+      font-size: $base-size;
+    }
+
+    h2 {
+      font-size: $small-size;
+    }
+
+    .tracks {
+      @include flex-direction(column);
+
+      li {
+        margin-left: 0;
+      }
+    }
+
+    figure {
+      text-align: center;
+
+      img {
+        width: 12em;
+      }
+    }
+
+    figcaption p {
+      font-size: $small-size;
+    }
+  }
 }
