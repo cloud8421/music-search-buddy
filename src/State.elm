@@ -191,6 +191,7 @@ update msg model =
                     { model
                         | query = Just q
                         , albums = resourceStatus
+                        , currentAlbum = NotAsked
                         , error = Nothing
                     }
 

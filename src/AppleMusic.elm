@@ -59,7 +59,7 @@ trackDecoder =
     map6 Track
         (map toString (field "trackId" int))
         (field "trackName" string)
-        (field "trackTimeMillis" int)
+        (field "trackTimeMillis" float)
         (field "trackNumber" int)
         (field "discNumber" int)
         (field "trackViewUrl" string)
@@ -67,11 +67,12 @@ trackDecoder =
 
 albumDetailsDecoder : Decoder AlbumDetails
 albumDetailsDecoder =
-    map5 AlbumDetails
+    map6 AlbumDetails
         (map toString (field "collectionId" int))
         (field "artistName" string)
         (field "collectionName" string)
         (field "releaseDate" string)
+        (field "artworkUrl100" (map coverTransformer string))
         (succeed [])
 
 

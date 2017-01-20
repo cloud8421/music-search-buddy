@@ -207,6 +207,49 @@ footer {
   }
 }
 
+.album-details {
+  $offset: 2em;
+  @include display(flex);
+  @include justify-content(center);
+  @include align-items(center);
+  position: absolute;
+  top: 20%;
+  width: 100%;
+  z-index: 3;
+
+  .container {
+    width: 40%;
+    padding: 2em;
+    background-color: $white;
+    box-shadow: 4px 4px 80px 12px rgba($black, 0.2);
+  }
+
+  .close-icon {
+    float: right;
+  }
+
+  .tracks {
+    @include display(flex);
+
+    ul {
+      @include flex-grow(1);
+    }
+
+    li {
+      @include display(flex);
+      @include justify-content(space-between);
+
+      span {
+        margin: 0.5em;
+      }
+
+      .title {
+        @include flex-grow(1);
+      }
+    }
+  }
+}
+
 .spinner {
   $spinner-color: $gray;
 

@@ -5,6 +5,7 @@ import Dict exposing (Dict)
 import Http exposing (Error)
 import Navigation exposing (Location)
 import RemoteData exposing (WebData)
+import Time exposing (Time)
 
 
 type Route
@@ -52,7 +53,7 @@ type alias Album =
 type alias Track =
     { id : String
     , title : String
-    , duration : Int
+    , duration : Time
     , number : Int
     , disc : Int
     , url : String
@@ -64,6 +65,7 @@ type alias AlbumDetails =
     , artist : String
     , title : String
     , releaseDate : String
+    , cover : String
     , tracks : List Track
     }
 

@@ -58,7 +58,7 @@ trackDecoder =
     map6 Track
         (field "id" string)
         (field "name" string)
-        (field "duration_ms" int)
+        (field "duration_ms" float)
         (field "track_number" int)
         (field "disc_number" int)
         (field "href" string)
@@ -66,11 +66,12 @@ trackDecoder =
 
 albumDetailsDecoder : Decoder AlbumDetails
 albumDetailsDecoder =
-    map5 AlbumDetails
+    map6 AlbumDetails
         (field "id" string)
         (field "artists" artistDecoder)
         (field "name" string)
         (field "release_date" string)
+        (field "images" (index 1 (imgDecoder)))
         (at [ "tracks", "items" ] (list trackDecoder))
 
 

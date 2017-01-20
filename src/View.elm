@@ -103,6 +103,7 @@ searchBox q =
         , id "q"
         , name "q"
         , onInput Search
+        , onClick CloseAlbumDetails
         , value (Maybe.withDefault "" q)
         , placeholder "e.g. Porcupine Tree"
         ]
@@ -242,18 +243,69 @@ albumsSection model =
             [ contents ]
 
 
+trackList : List Track -> Html Msg
+trackList tracks =
+    let
+        formatDuration duration =
+            let
+                minutes =
+                    truncate (duration / 1000 / 60)
+
+                seconds =
+                    rem (round (duration / 1000)) 60
+
+                pad s =
+                    if String.length s <= 1 then
+                        "0" ++ s
+                    else
+                        s
+            in
+                (minutes |> toString) ++ ":" ++ (seconds |> toString |> pad)
+
+        row track =
+            li []
+                [ span [ class "number" ] [ text <| toString track.number ]
+                , span [ class "title" ] [ text track.title ]
+                , span [ class "duration" ] [ text <| formatDuration track.duration ]
+                ]
+
+        orderedTracks =
+            List.sortBy .number tracks
+    in
+        ul [ class "track-list" ]
+            (List.map row orderedTracks)
+
+
 albumDetailsPreview : Model -> Html Msg
 albumDetailsPreview model =
     case model.currentAlbum of
         Success albumDetails ->
             div [ class "album-details" ]
-                [ p [ onClick CloseAlbumDetails ]
-                    [ text "X" ]
-                , h1 [] [ text albumDetails.title ]
+                [ div [ class "container" ]
+                    [ i
+                        [ class "fa fa-times close-icon"
+                        , onClick CloseAlbumDetails
+                        ]
+                        []
+                    , h1 [] [ text albumDetails.title ]
+                    , h2 [] [ text albumDetails.artist ]
+                    , section [ class "tracks" ]
+                        [ figure []
+                            [ img [ src albumDetails.cover ] []
+                            , figcaption []
+                                [ text albumDetails.releaseDate
+                                ]
+                            ]
+                        , trackList albumDetails.tracks
+                        ]
+                    ]
                 ]
 
         Loading ->
-            spinner
+            div [ class "album-details" ]
+                [ div [ class "container" ]
+                    [ spinner ]
+                ]
 
         otherwise ->
             div [] []
