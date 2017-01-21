@@ -209,7 +209,7 @@ footer {
   @include display(flex);
   @include justify-content(center);
   @include align-items(center);
-  position: absolute;
+  position: fixed;
   top: 20%;
   width: 100%;
   z-index: 3;
