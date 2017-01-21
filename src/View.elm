@@ -81,7 +81,7 @@ albumItem ( hash, album ) =
         ]
 
 
-albumList : List ( Int, Album ) -> Html Msg
+albumList : Albums -> Html Msg
 albumList albums =
     case albums of
         [] ->
@@ -222,14 +222,9 @@ albumsSection model =
         contents =
             case model.albums of
                 Success albums ->
-                    let
-                        sortedAlbums =
-                            albums
-                                |> Album.toList
-                                |> Album.forProvider model.providerFilter
-                                |> Album.sortedList model.query
-                    in
-                        albumList sortedAlbums
+                    albums
+                        |> Album.forProvider model.providerFilter
+                        |> albumList
 
                 Loading ->
                     spinner

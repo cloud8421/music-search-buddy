@@ -1,11 +1,15 @@
 module Album exposing (..)
 
-import Dict
+import Dict exposing (Dict)
 import FNV
 import String exposing (toLower)
 import String.Extra exposing (dasherize)
 import StringDistance
 import Types exposing (..)
+
+
+type alias AlbumStore =
+    Dict Int Album
 
 
 hasAppleMusicLink : Album -> Bool
@@ -48,12 +52,17 @@ hash artist title =
         FNV.hashString (normalizedArtist ++ normalizedTitle)
 
 
-empty : Albums
+empty : AlbumStore
 empty =
     Dict.empty
 
 
-add : Album -> Albums -> Albums
+fromList : Albums -> AlbumStore
+fromList =
+    Dict.fromList
+
+
+add : Album -> AlbumStore -> AlbumStore
 add album initial =
     case Dict.get album.hash initial of
         Just existing ->
@@ -70,7 +79,7 @@ add album initial =
             Dict.insert album.hash album initial
 
 
-addMany : List Album -> Albums -> Albums
+addMany : List Album -> AlbumStore -> AlbumStore
 addMany hashPairs initial =
     List.foldl add initial hashPairs
 
@@ -80,7 +89,7 @@ compareWithQuery query album =
     StringDistance.sift3Distance (toLower album.title) (toLower query)
 
 
-forProvider : ProviderFilter -> List ( Int, Album ) -> List ( Int, Album )
+forProvider : ProviderFilter -> Albums -> Albums
 forProvider providerFilter albumList =
     case providerFilter of
         All ->
@@ -95,7 +104,7 @@ forProvider providerFilter albumList =
                 |> List.filter (\( hash, album ) -> hasAppleMusicLink album)
 
 
-toList : Albums -> List ( Int, Album )
+toList : AlbumStore -> Albums
 toList =
     Dict.toList
 

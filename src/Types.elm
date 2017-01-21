@@ -37,7 +37,7 @@ type ProviderFilter
 
 
 type alias Albums =
-    Dict Int Album
+    List ( Int, Album )
 
 
 type alias Album =

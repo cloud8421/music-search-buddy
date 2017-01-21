@@ -208,13 +208,16 @@ update msg model =
                 currentAlbums =
                     case model.albums of
                         Success albums ->
-                            albums
+                            Album.fromList albums
 
                         otherwise ->
                             Album.empty
 
                 newAlbums =
-                    Album.addMany albums currentAlbums
+                    currentAlbums
+                        |> Album.addMany albums
+                        |> Album.toList
+                        |> Album.sortedList model.query
             in
                 ( { model
                     | albums = Success newAlbums
@@ -250,6 +253,8 @@ update msg model =
             model ! []
 
         SetProviderFilter providerFilter ->
-            ( { model | providerFilter = providerFilter }
+            ( { model
+                | providerFilter = providerFilter
+              }
             , Cmd.none
             )
