@@ -5,11 +5,14 @@ import Dict exposing (Dict)
 import Http exposing (Error)
 import Navigation exposing (Location)
 import RemoteData exposing (WebData)
+import Time exposing (Time)
+import Date exposing (Date)
 
 
 type Route
     = HomeR
     | SearchR String
+    | LookupR Provider String
     | NotFoundR
 
 
@@ -18,13 +21,13 @@ type Country
     | US
 
 
-type alias Url =
+type alias Id =
     String
 
 
 type Provider
-    = Spotify Url
-    | AppleMusic Url
+    = Spotify
+    | AppleMusic
 
 
 type ProviderFilter
@@ -34,7 +37,7 @@ type ProviderFilter
 
 
 type alias Albums =
-    Dict Int Album
+    List ( Int, Album )
 
 
 type alias Album =
@@ -44,7 +47,28 @@ type alias Album =
     , thumb : String
     , cover : String
     , price : Maybe Float
-    , providers : List Provider
+    , providers : List ( Provider, Id )
+    }
+
+
+type alias Track =
+    { id : String
+    , title : String
+    , duration : Time
+    , number : Int
+    , disc : Int
+    , url : String
+    }
+
+
+type alias AlbumDetails =
+    { id : String
+    , artist : String
+    , title : String
+    , releaseDate : Date
+    , cover : String
+    , url : String
+    , tracks : List Track
     }
 
 
@@ -56,6 +80,8 @@ type Msg
     | ChangeCountry Country
     | Search String
     | SearchResult (WebData (List Album))
+    | AlbumDetailsResult (WebData AlbumDetails)
+    | CloseAlbumDetails
     | SetProviderFilter ProviderFilter
 
 
@@ -65,6 +91,7 @@ type alias Model =
     , providerFilter : ProviderFilter
     , country : Country
     , albums : WebData Albums
+    , currentAlbum : WebData AlbumDetails
     , debounce : Debounce.Model Msg
     , error : Maybe Error
     }

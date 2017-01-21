@@ -2,13 +2,33 @@ module View exposing (..)
 
 import Album
 import Country
+import Date
 import Html exposing (..)
 import Html.Attributes exposing (..)
-import Html.Events exposing (onClick, onInput, on, targetValue)
+import Html.Events exposing (onClick, onInput, on, targetValue, onWithOptions)
 import Json.Decode as Json
 import RemoteData exposing (..)
+import Routes
 import String.Extra exposing (ellipsis)
 import Types exposing (..)
+
+
+iconLink : Route -> Html Msg -> List (Attribute Msg) -> Html Msg
+iconLink route icon attrs =
+    let
+        opts =
+            { preventDefault = True
+            , stopPropagation = False
+            }
+
+        defaultAttrs =
+            [ href (Routes.toString route)
+            , onWithOptions "click" opts (Json.succeed <| GoTo route)
+            ]
+    in
+        a
+            (defaultAttrs ++ attrs)
+            [ icon ]
 
 
 spinner : Html msg
@@ -27,16 +47,20 @@ spinner =
         ]
 
 
-providersBadge : List Provider -> Html Msg
+providersBadge : List ( Provider, Id ) -> Html Msg
 providersBadge providers =
     let
         badge provider =
             case provider of
-                Spotify url ->
-                    a [ href url ] [ i [ class "icon-spotify" ] [] ]
+                ( Spotify, id ) ->
+                    iconLink (LookupR Spotify id)
+                        (i [ class "icon-spotify" ] [])
+                        []
 
-                AppleMusic url ->
-                    a [ href url ] [ i [ class "icon-appleinc" ] [] ]
+                ( AppleMusic, id ) ->
+                    iconLink (LookupR AppleMusic id)
+                        (i [ class "icon-appleinc" ] [])
+                        []
     in
         span [ class "links" ] (List.map badge providers)
 
@@ -57,7 +81,7 @@ albumItem ( hash, album ) =
         ]
 
 
-albumList : List ( Int, Album ) -> Html Msg
+albumList : Albums -> Html Msg
 albumList albums =
     case albums of
         [] ->
@@ -80,6 +104,7 @@ searchBox q =
         , id "q"
         , name "q"
         , onInput Search
+        , onClick CloseAlbumDetails
         , value (Maybe.withDefault "" q)
         , placeholder "e.g. Porcupine Tree"
         ]
@@ -197,14 +222,9 @@ albumsSection model =
         contents =
             case model.albums of
                 Success albums ->
-                    let
-                        sortedAlbums =
-                            albums
-                                |> Album.toList
-                                |> Album.forProvider model.providerFilter
-                                |> Album.sortedList model.query
-                    in
-                        albumList sortedAlbums
+                    albums
+                        |> Album.forProvider model.providerFilter
+                        |> albumList
 
                 Loading ->
                     spinner
@@ -217,6 +237,94 @@ albumsSection model =
     in
         section [ class "albums" ]
             [ contents ]
+
+
+trackList : List Track -> Html Msg
+trackList tracks =
+    let
+        formatDuration duration =
+            let
+                minutes =
+                    truncate (duration / 1000 / 60)
+
+                seconds =
+                    rem (round (duration / 1000)) 60
+
+                pad s =
+                    if String.length s <= 1 then
+                        "0" ++ s
+                    else
+                        s
+            in
+                (minutes |> toString) ++ ":" ++ (seconds |> toString |> pad)
+
+        row track =
+            li []
+                [ a
+                    [ class "play"
+                    , href track.url
+                    ]
+                    [ i [ class "icon-play2" ] [] ]
+                , span [ class "number" ] [ text <| toString track.number ]
+                , span [ class "title" ] [ text track.title ]
+                , span [ class "duration" ] [ text <| formatDuration track.duration ]
+                ]
+
+        orderedTracks =
+            List.sortBy .number tracks
+
+        totalDuration =
+            tracks
+                |> List.map .duration
+                |> List.foldl (+) 0
+
+        totalDurationRow =
+            li []
+                [ span [ class "title" ] [ text "Total" ]
+                , span [ class "duration" ] [ text <| formatDuration totalDuration ]
+                ]
+    in
+        ul [ class "track-list" ]
+            ((List.map row orderedTracks) ++ [ totalDurationRow ])
+
+
+albumDetailsPreview : Model -> Html Msg
+albumDetailsPreview model =
+    case model.currentAlbum of
+        Success albumDetails ->
+            div [ class "album-details" ]
+                [ div [ class "container" ]
+                    [ i
+                        [ class "icon-cancel-circle"
+                        , onClick CloseAlbumDetails
+                        ]
+                        []
+                    , h1 []
+                        [ a [ href albumDetails.url ]
+                            [ i [ class "icon-play2" ] [] ]
+                        , text albumDetails.title
+                        ]
+                    , h2 [] [ text albumDetails.artist ]
+                    , section [ class "tracks" ]
+                        [ figure []
+                            [ img [ src albumDetails.cover ] []
+                            , figcaption []
+                                [ p [] [ text <| toString <| Date.year albumDetails.releaseDate ]
+                                ]
+                            ]
+                        , trackList albumDetails.tracks
+                        ]
+                    ]
+                ]
+
+        Loading ->
+            div [ class "album-details" ]
+                [ div [ class "container" ]
+                    [ spinner ]
+                ]
+
+        otherwise ->
+            div [] []
 
 
 mainFooter : Html Msg
@@ -258,6 +366,7 @@ root model =
                 [ searchNav model
                 , errorAlert
                 , albumsSection model
+                , albumDetailsPreview model
                 , mainFooter
                 ]
 
@@ -265,5 +374,6 @@ root model =
             main_ []
                 [ searchNav model
                 , albumsSection model
+                , albumDetailsPreview model
                 , mainFooter
                 ]

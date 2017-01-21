@@ -2,6 +2,7 @@ module Spotify exposing (..)
 
 import Album
 import Country
+import Date exposing (Date)
 import Http
 import Json.Decode exposing (..)
 import QueryString as QS
@@ -12,6 +13,25 @@ import Types exposing (..)
 baseUrl : String
 baseUrl =
     "https://ms-api.fullyforged.com/search/spotify"
+
+
+customDecoder : Decoder a -> (a -> Result String b) -> Decoder b
+customDecoder d f =
+    let
+        resultDecoder x =
+            case x of
+                Ok a ->
+                    succeed a
+
+                Err e ->
+                    fail e
+    in
+        map f d |> andThen resultDecoder
+
+
+dateDecoder : Decoder Date
+dateDecoder =
+    customDecoder string Date.fromString
 
 
 artistDecoder : Decoder String
@@ -31,9 +51,9 @@ idDecoder =
         (field "name" string)
 
 
-providerTransformer : Url -> List Provider
-providerTransformer url =
-    [ Spotify url ]
+providerTransformer : Id -> List ( Provider, Id )
+providerTransformer id =
+    [ ( Spotify, id ) ]
 
 
 albumDecoder : Decoder Album
@@ -45,12 +65,35 @@ albumDecoder =
         (field "images" (index 2 (imgDecoder)))
         (field "images" (index 1 (imgDecoder)))
         (succeed Nothing)
-        (at [ "external_urls", "spotify" ] (map providerTransformer string))
+        (field "id" (map providerTransformer string))
 
 
 albumSearchDecoder : Decoder (List Album)
 albumSearchDecoder =
     at [ "albums", "items" ] (list albumDecoder)
+
+
+trackDecoder : Decoder Track
+trackDecoder =
+    map6 Track
+        (field "id" string)
+        (field "name" string)
+        (field "duration_ms" float)
+        (field "track_number" int)
+        (field "disc_number" int)
+        (field "href" string)
+
+
+albumDetailsDecoder : Decoder AlbumDetails
+albumDetailsDecoder =
+    map7 AlbumDetails
+        (field "id" string)
+        (field "artists" artistDecoder)
+        (field "name" string)
+        (field "release_date" dateDecoder)
+        (field "images" (index 1 (imgDecoder)))
+        (field "uri" string)
+        (at [ "tracks", "items" ] (list trackDecoder))
 
 
 albumSearch : String -> Country -> Cmd Msg
@@ -66,3 +109,14 @@ albumSearch q country =
         Http.get (baseUrl ++ params) albumSearchDecoder
             |> RemoteData.sendRequest
             |> Cmd.map SearchResult
+
+
+albumDetails : String -> Country -> Cmd Msg
+albumDetails id country =
+    let
+        url =
+            "https://ms-api.fullyforged.com/lookup/spotify/" ++ id
+    in
+        Http.get url albumDetailsDecoder
+            |> RemoteData.sendRequest
+            |> Cmd.map AlbumDetailsResult

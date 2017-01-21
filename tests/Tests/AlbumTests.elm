@@ -16,7 +16,7 @@ spotifyBlackFieldAlbum =
     , thumb = "https://i.scdn.co/image/e4d8e9ad4fa005f5fdda84f008880cb4fb85facd"
     , title = "Blackfield NYC - Blackfield Live In New York City"
     , price = Nothing
-    , providers = [ Spotify "https://open.spotify.com/album/0eOqcRD7o9mQI2hFSKkPgC" ]
+    , providers = [ ( Spotify, "https://open.spotify.com/album/0eOqcRD7o9mQI2hFSKkPgC" ) ]
     }
 
 
@@ -28,7 +28,7 @@ appleMusicBlackfieldAlbum =
     , thumb = "http://is1.mzstatic.com/image/thumb/Music/v4/cd/b9/c6/cdb9c6b3-956e-e527-f28f-97e86d563845/source/60x60bb.jpg"
     , title = "Blackfield NYC - Blackfield Live In New York City"
     , price = Nothing
-    , providers = [ AppleMusic "https://itunes.apple.com/gb/album/blackfield/id416772823?uo=4" ]
+    , providers = [ ( AppleMusic, "https://itunes.apple.com/gb/album/blackfield/id416772823?uo=4" ) ]
     }
 
 
@@ -78,8 +78,8 @@ all =
                             [ ( spotifyBlackFieldAlbum.hash
                               , { spotifyBlackFieldAlbum
                                     | providers =
-                                        [ Spotify "https://open.spotify.com/album/0eOqcRD7o9mQI2hFSKkPgC"
-                                        , AppleMusic "https://itunes.apple.com/gb/album/blackfield/id416772823?uo=4"
+                                        [ ( Spotify, "https://open.spotify.com/album/0eOqcRD7o9mQI2hFSKkPgC" )
+                                        , ( AppleMusic, "https://itunes.apple.com/gb/album/blackfield/id416772823?uo=4" )
                                         ]
                                 }
                               )

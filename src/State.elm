@@ -45,6 +45,7 @@ init location =
             , providerFilter = All
             , country = Country.default
             , albums = NotAsked
+            , currentAlbum = NotAsked
             , debounce = Debounce.init
             , error = Nothing
             }
@@ -61,6 +62,16 @@ search q country =
             ]
     else
         Cmd.none
+
+
+lookup : Provider -> Id -> Country -> Cmd Msg
+lookup provider id country =
+    case provider of
+        Spotify ->
+            Spotify.albumDetails id country
+
+        AppleMusic ->
+            AppleMusic.albumDetails id country
 
 
 updateRoute : Route -> Model -> ( Model, Cmd Msg )
@@ -94,6 +105,18 @@ updateRoute route model =
                     , Navigation.newUrl (Routes.toString route)
                     ]
                 )
+
+        LookupR provider id ->
+            ( { model
+                | route = route
+                , error = Nothing
+                , currentAlbum = Loading
+              }
+            , Cmd.batch
+                [ lookup provider id model.country
+                , Navigation.newUrl (Routes.toString route)
+                ]
+            )
 
         otherwise ->
             ( { model | route = route }
@@ -168,13 +191,14 @@ update msg model =
                     { model
                         | query = Just q
                         , albums = resourceStatus
+                        , currentAlbum = NotAsked
                         , error = Nothing
                     }
 
                 cmd =
                     Cmd.batch
-                        [ Navigation.newUrl (Routes.toString route)
-                        , search q model.country
+                        [ search q model.country
+                        , Navigation.newUrl (Routes.toString route)
                         ]
             in
                 update (DebounceMsg (Debounce.Bounce cmd)) newModel
@@ -184,19 +208,41 @@ update msg model =
                 currentAlbums =
                     case model.albums of
                         Success albums ->
-                            albums
+                            Album.fromList albums
 
                         otherwise ->
                             Album.empty
 
                 newAlbums =
-                    Album.addMany albums currentAlbums
+                    currentAlbums
+                        |> Album.addMany albums
+                        |> Album.toList
+                        |> Album.sortedList model.query
             in
                 ( { model
                     | albums = Success newAlbums
                   }
                 , Cmd.none
                 )
+
+        AlbumDetailsResult result ->
+            ( { model | currentAlbum = result }
+            , Cmd.none
+            )
+
+        CloseAlbumDetails ->
+            let
+                newModel =
+                    { model | currentAlbum = NotAsked }
+            in
+                case model.albums of
+                    NotAsked ->
+                        updateRoute HomeR newModel
+
+                    otherwise ->
+                        ( newModel
+                        , Navigation.back 1
+                        )
 
         SearchResult (Failure error) ->
             ( { model | error = Just error }
@@ -207,6 +253,8 @@ update msg model =
             model ! []
 
         SetProviderFilter providerFilter ->
-            ( { model | providerFilter = providerFilter }
+            ( { model
+                | providerFilter = providerFilter
+              }
             , Cmd.none
             )
