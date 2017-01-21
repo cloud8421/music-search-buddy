@@ -271,7 +271,11 @@ trackList tracks =
                 ]
 
         orderedTracks =
-            List.sortBy .number tracks
+            let
+                sortFn track =
+                    ( track.disc, track.number )
+            in
+                List.sortBy sortFn tracks
 
         totalDuration =
             tracks
@@ -360,20 +364,27 @@ mainFooter =
 
 root : Model -> Html Msg
 root model =
-    case model.error of
-        Just _ ->
-            main_ []
-                [ searchNav model
-                , errorAlert
-                , albumsSection model
-                , albumDetailsPreview model
-                , mainFooter
-                ]
+    let
+        yield =
+            case model.route of
+                LookupR _ _ ->
+                    albumDetailsPreview model
 
-        Nothing ->
-            main_ []
-                [ searchNav model
-                , albumsSection model
-                , albumDetailsPreview model
-                , mainFooter
-                ]
+                otherwise ->
+                    albumsSection model
+    in
+        case model.error of
+            Just _ ->
+                main_ []
+                    [ searchNav model
+                    , errorAlert
+                    , yield
+                    , mainFooter
+                    ]
+
+            Nothing ->
+                main_ []
+                    [ searchNav model
+                    , yield
+                    , mainFooter
+                    ]
