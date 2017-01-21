@@ -33,10 +33,10 @@ providersBadge providers =
         badge provider =
             case provider of
                 Spotify url ->
-                    a [ href url ] [ i [ class "fa fa-spotify" ] [] ]
+                    a [ href url ] [ i [ class "icon-spotify" ] [] ]
 
                 AppleMusic url ->
-                    a [ href url ] [ i [ class "fa fa-apple" ] [] ]
+                    a [ href url ] [ i [ class "icon-appleinc" ] [] ]
     in
         span [ class "links" ] (List.map badge providers)
 
@@ -62,7 +62,7 @@ albumList albums =
     case albums of
         [] ->
             div [ class "no-results" ]
-                [ i [ class "fa fa-frown-o background-icon" ] []
+                [ i [ class "icon-sad background-icon" ] []
                 , p []
                     [ text "Sorry! No results for this search"
                     ]
@@ -154,8 +154,7 @@ providerFilter model =
         appleMusicButton =
             i
                 [ classList
-                    [ ( "fa", True )
-                    , ( "fa-apple", True )
+                    [ ( "icon-appleinc", True )
                     , ( "active", model.providerFilter == OnlyAppleMusic )
                     ]
                 , onClick (SetProviderFilter OnlyAppleMusic)
@@ -165,8 +164,7 @@ providerFilter model =
         spotifyButton =
             i
                 [ classList
-                    [ ( "fa", True )
-                    , ( "fa-spotify", True )
+                    [ ( "icon-spotify", True )
                     , ( "active", model.providerFilter == OnlySpotify )
                     ]
                 , onClick (SetProviderFilter OnlySpotify)
@@ -186,7 +184,7 @@ providerFilter model =
 searchNav : Model -> Html Msg
 searchNav model =
     Html.form [ id "search" ]
-        [ i [ class "fa fa-search" ] []
+        [ i [ class "icon-search" ] []
         , searchBox model.query
         , countrySelect model.country
         , providerFilter model
@@ -212,7 +210,7 @@ albumsSection model =
                     spinner
 
                 NotAsked ->
-                    i [ class "fa fa-music background-icon" ] []
+                    i [ class "icon-music background-icon" ] []
 
                 Failure e ->
                     h1 [] [ text <| toString e ]
@@ -229,12 +227,12 @@ mainFooter =
         , p [ class "secondary" ]
             [ text "Contact me on "
             , a [ href "https://twitter.com/cloud8421" ]
-                [ i [ class "fa fa-twitter" ] []
+                [ i [ class "icon-twitter" ] []
                 , text " Twitter"
                 ]
             , text " | Source available on "
             , a [ href "https://github.com/cloud8421/music-search-buddy" ]
-                [ i [ class "fa fa-github" ] []
+                [ i [ class "icon-github" ] []
                 , text " GitHub"
                 ]
             ]
@@ -245,9 +243,9 @@ mainFooter =
                 ]
             ]
         , p [ class "secondary" ]
-            [ text "Font Awesome by Dave Gandy - "
-            , a [ href "http://fontawesome.io" ]
-                [ text "http://fontawesome.io" ]
+            [ text "Icon font by "
+            , a [ href "http://icomoon.io" ]
+                [ text "Icomoon" ]
             ]
         ]
 
