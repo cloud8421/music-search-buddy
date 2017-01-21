@@ -260,6 +260,7 @@ root model =
                 [ searchNav model
                 , errorAlert
                 , albumsSection model
+                , mainFooter
                 ]
 
         Nothing ->
