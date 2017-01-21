@@ -269,7 +269,7 @@ trackList tracks =
                     [ class "play"
                     , href track.url
                     ]
-                    [ i [ class "fa fa-play-circle" ] [] ]
+                    [ i [ class "icon-play2" ] [] ]
                 , span [ class "number" ] [ text <| toString track.number ]
                 , span [ class "title" ] [ text track.title ]
                 , span [ class "duration" ] [ text <| formatDuration track.duration ]
@@ -300,13 +300,13 @@ albumDetailsPreview model =
             div [ class "album-details" ]
                 [ div [ class "container" ]
                     [ i
-                        [ class "fa fa-times close-icon"
+                        [ class "icon-cancel-circle"
                         , onClick CloseAlbumDetails
                         ]
                         []
                     , h1 []
                         [ a [ href albumDetails.url ]
-                            [ i [ class "fa fa-play-circle" ] [] ]
+                            [ i [ class "icon-play2" ] [] ]
                         , text albumDetails.title
                         ]
                     , h2 [] [ text albumDetails.artist ]
