@@ -1,4 +1,5 @@
 @import "bourbon/bourbon";
+@import "fonts";
 @import url('https://fonts.googleapis.com/css?family=Source+Sans+Pro');
 
 $black: #282830;
@@ -48,12 +49,15 @@ main {
   min-height: 100%;
 }
 
+a {
+  text-decoration: none;
+}
+
 footer {
   text-align: center;
   padding-bottom: 1em;
 
   a {
-    text-decoration: none;
     color: $fg-secondary-color;
   }
 
@@ -87,7 +91,7 @@ footer {
     border: none;
   }
 
-  .fa-search {
+  .icon-search {
     margin-right: -1.5em;
     color: $fg-secondary-color;
     z-index: 1;
