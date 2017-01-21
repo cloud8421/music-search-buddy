@@ -1,7 +1,6 @@
 module Types exposing (..)
 
 import Debounce
-import Dict exposing (Dict)
 import Http exposing (Error)
 import Navigation exposing (Location)
 import RemoteData exposing (WebData)

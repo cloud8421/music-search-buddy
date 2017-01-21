@@ -81,7 +81,7 @@ trackDecoder =
         (field "duration_ms" float)
         (field "track_number" int)
         (field "disc_number" int)
-        (field "href" string)
+        (field "uri" string)
 
 
 albumDetailsDecoder : Decoder AlbumDetails
