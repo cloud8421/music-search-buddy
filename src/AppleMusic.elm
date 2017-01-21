@@ -39,12 +39,13 @@ providerTransformer url =
 
 albumDecoder : Decoder Album
 albumDecoder =
-    map6 Album
+    map7 Album
         hashDecoder
         (field "collectionName" string)
         (field "artistName" string)
         (field "artworkUrl60" (map thumbTransformer string))
         (field "artworkUrl100" (map coverTransformer string))
+        (maybe (field "collectionPrice" float))
         (field "collectionViewUrl" (map providerTransformer string))
 
 
@@ -63,7 +64,11 @@ albumSearch q country =
                 |> QS.add "entity" "album"
                 |> QS.add "term" q
                 |> QS.render
+
+        filterOutLegacyAlbums albums =
+            List.filter (\a -> not (a.price == Nothing)) albums
     in
         Http.get (baseUrl ++ params) albumSearchDecoder
             |> RemoteData.sendRequest
+            |> Cmd.map (RemoteData.map filterOutLegacyAlbums)
             |> Cmd.map SearchResult

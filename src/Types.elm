@@ -43,6 +43,7 @@ type alias Album =
     , artist : String
     , thumb : String
     , cover : String
+    , price : Maybe Float
     , providers : List Provider
     }
 
