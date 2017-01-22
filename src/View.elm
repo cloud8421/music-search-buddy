@@ -292,43 +292,53 @@ trackList tracks =
             ((List.map row orderedTracks) ++ [ totalDurationRow ])
 
 
-albumDetailsPreview : Model -> Html Msg
-albumDetailsPreview model =
-    case model.currentAlbum of
-        Success albumDetails ->
-            div [ class "album-details" ]
-                [ div [ class "container" ]
-                    [ i
-                        [ class "icon-cancel-circle"
-                        , onClick CloseAlbumDetails
-                        ]
-                        []
-                    , h1 []
-                        [ text albumDetails.title ]
-                    , h2 [] [ text albumDetails.artist ]
-                    , section [ class "tracks" ]
-                        [ figure []
-                            [ a [ href albumDetails.url ]
-                                [ i [ class "icon-play2" ] []
-                                , img [ src albumDetails.cover ] []
-                                ]
-                            , figcaption []
-                                [ p [] [ text <| toString <| Date.year albumDetails.releaseDate ]
-                                ]
+albumDetailsPreview : Model -> Provider -> Html Msg
+albumDetailsPreview model provider =
+    let
+        providerIcon =
+            case provider of
+                Spotify ->
+                    i [ class "provider icon-spotify" ] []
+
+                AppleMusic ->
+                    i [ class "provider icon-appleinc" ] []
+    in
+        case model.currentAlbum of
+            Success albumDetails ->
+                div [ class "album-details" ]
+                    [ div [ class "container" ]
+                        [ i
+                            [ class "icon-cancel-circle"
+                            , onClick CloseAlbumDetails
                             ]
-                        , trackList albumDetails.tracks
+                            []
+                        , providerIcon
+                        , h1 []
+                            [ text albumDetails.title ]
+                        , h2 [] [ text albumDetails.artist ]
+                        , section [ class "tracks" ]
+                            [ figure []
+                                [ a [ href albumDetails.url ]
+                                    [ i [ class "icon-play2" ] []
+                                    , img [ src albumDetails.cover ] []
+                                    ]
+                                , figcaption []
+                                    [ p [] [ text <| toString <| Date.year albumDetails.releaseDate ]
+                                    ]
+                                ]
+                            , trackList albumDetails.tracks
+                            ]
                         ]
                     ]
-                ]
 
-        Loading ->
-            div [ class "album-details" ]
-                [ div [ class "container" ]
-                    [ spinner ]
-                ]
+            Loading ->
+                div [ class "album-details" ]
+                    [ div [ class "container" ]
+                        [ spinner ]
+                    ]
 
-        otherwise ->
-            div [] []
+            otherwise ->
+                div [] []
 
 
 mainFooter : Html Msg
@@ -367,8 +377,8 @@ root model =
     let
         yield =
             case model.route of
-                LookupR _ _ ->
-                    albumDetailsPreview model
+                LookupR provider _ ->
+                    albumDetailsPreview model provider
 
                 otherwise ->
                     albumsSection model

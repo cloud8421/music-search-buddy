@@ -229,12 +229,21 @@ footer {
 
   .icon-cancel-circle {
     float: right;
+    margin: 0.25em;
     font-size: $big-size;
     cursor: pointer;
   }
 
+  .provider {
+    float: left;
+    font-size: $big-size;
+    margin-top: 0.8em;
+    margin-right: 0.5em;
+  }
+
   .tracks {
     @include display(flex);
+    margin-top: 1em;
 
     ul {
       @include flex-grow(1);
@@ -401,7 +410,11 @@ footer {
       width: 80%;
     }
 
-    .close-icon {
+    .icon-cancel-circle {
+      font-size: $base-size;
+    }
+
+    .provider {
       font-size: $base-size;
     }
 
@@ -415,6 +428,7 @@ footer {
 
     .tracks {
       @include flex-direction(column);
+      margin-top: 0;
 
       li {
         margin-left: 0;
@@ -424,19 +438,21 @@ footer {
     figure {
       margin: 1em auto;
       text-align: center;
-      width: 12em;
+      width: 16em;
 
       .icon-play2 {
-        font-size: 5em;
+        font-size: 4em;
+        left: 1.25em;
+        top: 1.25em;
       }
 
       img {
-        width: 12em;
+        width: 16em;
       }
     }
 
     figcaption p {
-      font-size: $small-size;
+      font-size: $base-size;
     }
   }
 }
